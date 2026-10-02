@@ -31,7 +31,7 @@ public class PersistantScene : MonoBehaviour
         {
             if (obj != null)
             {
-                DontDestroyOnLoad(obj)
+                DontDestroyOnLoad(obj);
             }
         }
     }
@@ -40,7 +40,7 @@ public class PersistantScene : MonoBehaviour
     {
         foreach (GameObject obj in persistantObjects)
         {
-            CleanUpAndDestroy(obj);
+            Destroy(obj);
         }
         Destroy(gameObject);
     }
