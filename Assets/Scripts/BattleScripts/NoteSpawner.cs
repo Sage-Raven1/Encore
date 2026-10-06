@@ -1,84 +1,148 @@
-using System.Collections.Generic;
 using UnityEngine;
-
-[System.Serializable]
-public class BeatNote
-{
-    public float beatTime;
-    public int lane;
-}
+using System.Collections.Generic;
+using System.IO;
 
 public class NoteSpawner : MonoBehaviour
 {
+    public Conductor conductor;
     public GameObject notePrefab;
-    public float[] laneX = new float[4];
-    public string chartFileName = "chart";   
-    public List<BeatNote> chart = new List<BeatNote>();
+    public TextAsset chartCSV;  
+    public List<NoteData> chartNotes = new List<NoteData>();
 
-    int nextIndex = 0;
+    // Spawn settings
+    public float[] laneXPositions = new float[] { -1.52f, -0.52f, 0.52f, 1.52f };
+    public float spawnY = 6f;      
+    public float hitLineY = -3.4f;    
 
-    void Awake()
+    private Dictionary<int, Queue<Note>> notesInLanes = new Dictionary<int, Queue<Note>>();
+
+    void Start()
     {
-        LoadChart();
-    }
+        // Find Conductor if not assigned
+        if (conductor == null)
+            conductor = Conductor.instance;
 
-    void LoadChart()
-    {
-        chart.Clear();
-        TextAsset file = Resources.Load<TextAsset>(chartFileName);
-        if (file == null)
+        // Initialize note queues for each lane
+        for (int i = 0; i < 4; i++)
         {
-            Debug.LogError("Chart file not found in Resources: " + chartFileName);
-            return;
+            notesInLanes[i] = new Queue<Note>();
         }
 
-        string[] lines = file.text.Split('\n');
-        foreach (string line in lines)
+        // Load chart from CSV if assigned
+        if (chartCSV != null)
         {
-            string trimmed = line.Trim();
-            if (string.IsNullOrEmpty(trimmed)) continue;   
-
-            string[] parts = trimmed.Split(',');
-            if (parts.Length < 2) continue;                
-
-            if (float.TryParse(parts[0], out float time) &&
-                int.TryParse(parts[1], out int lane))
-            {
-                chart.Add(new BeatNote { beatTime = time, lane = lane });
-            }
+            LoadChartFromCSV(chartCSV);
         }
-
-        chart.Sort((a, b) => a.beatTime.CompareTo(b.beatTime));  
-        Debug.Log("Loaded " + chart.Count + " notes from chart.");
+        else
+        {
+            UnityEngine.Debug.LogWarning("NoteSpawner: No chart CSV assigned! Drag a CSV file into the chartCSV field.");
+        }
     }
 
     void Update()
     {
-        if (!Conductor.instance.Playing) return;
+        // Don't spawn notes while paused
+        if (GameManager.instance != null && GameManager.instance.isPaused)
+            return;
 
-        float now = Conductor.instance.SongTime;
-        float travel = Conductor.instance.TravelTime;
+        if (conductor == null || chartNotes == null || chartNotes.Count == 0)
+            return;
 
-        while (nextIndex < chart.Count &&
-               chart[nextIndex].beatTime - now <= travel)
+        float currentTime = conductor.SongTime;  
+
+        // Spawn notes that are within the spawn window (5 seconds ahead)
+        foreach (NoteData note in chartNotes)
         {
-            Spawn(chart[nextIndex]);
-            nextIndex++;
+            if (!note.hasBeenSpawned && note.time <= currentTime + 5f)
+            {
+                SpawnNote(note);
+                note.hasBeenSpawned = true;
+            }
         }
     }
 
-    void Spawn(BeatNote data)
+    void SpawnNote(NoteData noteData)
     {
-        GameObject go = Instantiate(notePrefab);
-        Note note = go.GetComponent<Note>();
-        if (note == null)
+        if (notePrefab == null)
         {
-            Debug.LogError("Note prefab is missing the Note script!");
+            UnityEngine.Debug.LogError("Note prefab not assigned!");
             return;
         }
-        note.targetTime = data.beatTime;
-        note.lane = data.lane;
-        go.transform.position = new Vector3(
-            laneX[data.lane], Conductor.instance.spawnY, 0f);
+
+        // Get the X position for this lane
+        if (noteData.lane < 0 || noteData.lane >= laneXPositions.Length)
+        {
+            UnityEngine.Debug.LogError($"Invalid lane: {noteData.lane}");
+            return;
+        }
+
+        float xPos = laneXPositions[noteData.lane];
+
+        // Instantiate the note at spawn position
+        GameObject noteObj = Instantiate(notePrefab, new Vector3(xPos, spawnY, 0), Quaternion.identity);
+        Note noteScript = noteObj.GetComponent<Note>();
+
+        if (noteScript == null)
+        {
+            UnityEngine.Debug.LogError("Note prefab missing Note script!");
+            Destroy(noteObj);
+            return;
+        }
+
+        // Set up the note with timing data
+        noteScript.lane = noteData.lane;
+        noteScript.targetTime = noteData.time;
+        noteScript.hasBeenHit = false;
+
+        // Add to lane queue for tracking
+        notesInLanes[noteData.lane].Enqueue(noteScript);
+
+        UnityEngine.Debug.Log($"Spawned note at time {noteData.time} in lane {noteData.lane}");
     }
+
+    public void LoadChartFromCSV(TextAsset csvFile)
+    {
+        if (csvFile == null)
+        {
+            UnityEngine.Debug.LogError("CSV file is null!");
+            return;
+        }
+
+        chartNotes.Clear();
+        string[] lines = csvFile.text.Split('\n');
+
+        // Skip header line if it exists
+        int startLine = (lines.Length > 0 && lines[0].Contains("time")) ? 1 : 0;
+
+        for (int i = startLine; i < lines.Length; i++)
+        {
+            string line = lines[i].Trim();
+            if (string.IsNullOrEmpty(line))
+                continue;
+
+            string[] parts = line.Split(',');
+            if (parts.Length >= 2)
+            {
+                if (float.TryParse(parts[0], out float time) && int.TryParse(parts[1], out int lane))
+                {
+                    if (lane >= 0 && lane < 4)
+                    {
+                        chartNotes.Add(new NoteData { time = time, lane = lane, hasBeenSpawned = false });
+                    }
+                }
+            }
+        }
+
+        // Sort by time
+        chartNotes.Sort((a, b) => a.time.CompareTo(b.time));
+
+        UnityEngine.Debug.Log($"Loaded {chartNotes.Count} notes from chart: {csvFile.name}");
+    }
+}
+
+public class NoteData
+{
+    public float time;
+    public int lane;
+    public bool hasBeenSpawned;
 }

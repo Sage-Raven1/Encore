@@ -21,6 +21,16 @@ public class Conductor : MonoBehaviour
         Playing = true;
     }
 
+    public void PauseSong()
+    {
+        song.Pause();
+    }
+
+    public void ResumeSong()
+    {
+        song.UnPause();
+    }
+
     void Update()
     {
         if (Playing)
