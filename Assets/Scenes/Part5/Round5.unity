@@ -312,8 +312,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawner: {fileID: 2040059128}
-  conductor: {fileID: 1847985636}
-  judgementDisplay: {fileID: 0}
   StartPlaying: 0
   perfectWeight: 1
   greatWeight: 0.66
@@ -2531,7 +2529,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   song: {fileID: 111213197}
-  scrollSpeed: 10
+  scrollSpeed: 5
   hitLineY: -3.4
   spawnY: 6
 --- !u!4 &1847985637

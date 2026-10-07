@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
 
     //references
     public NoteSpawner spawner;        // drag NoteSpawner in
+    public Conductor conductor;
+    public JudgementDisplay judgementDisplay;
     public bool StartPlaying;
 
     // accuracy weighting
@@ -62,8 +64,20 @@ public class GameManager : MonoBehaviour
     {
         Currentmultiplier = 1;
         UpdateAccuracyText();
-        TotalNotes = spawner.chartNotes.Count;   // count comes from the chart now
-        if (pausePanel != null) pausePanel.SetActive(false);
+
+        if (conductor == null)
+            conductor = Conductor.instance;
+
+        if (judgementDisplay == null)
+            judgementDisplay = FindObjectOfType<JudgementDisplay>();
+
+        // Count notes from spawner's chart
+        if (spawner != null && spawner.chartNotes != null)
+            TotalNotes = spawner.chartNotes.Count;
+
+        // ENSURE PAUSE PANEL IS INVISIBLE AT START
+        if (pausePanel != null)
+            pausePanel.SetActive(false);
     }
 
     void Update()
@@ -74,18 +88,19 @@ public class GameManager : MonoBehaviour
             if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
             {
                 StartPlaying = true;
-                Conductor.instance.StartSong();
+                conductor.StartSong();
             }
         }
         else
         {
+            // Pause with ESC
             if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
             {
                 if (isPaused) ResumeGame();
                 else PauseGame();
             }
 
-            // Check for lane hits (D, F, J, K)
+            // Check for lane hits
             if (!isPaused)
             {
                 if (Keyboard.current.dKey.wasPressedThisFrame)
@@ -107,31 +122,44 @@ public class GameManager : MonoBehaviour
     {
         if (!StartPlaying || isPaused) return;
 
-        float currentTime = Conductor.instance.SongTime;
+        float currentTime = conductor.SongTime;
         Note[] allNotes = FindObjectsOfType<Note>();
+
+        UnityEngine.Debug.Log($"Lane {lane} hit at time {currentTime}. Found {allNotes.Length} notes total.");
 
         foreach (Note note in allNotes)
         {
             if (note.lane == lane && !note.hasBeenHit)
             {
                 float timeDiff = Mathf.Abs(note.targetTime - currentTime);
+                UnityEngine.Debug.Log($"Note in lane {lane}: targetTime={note.targetTime}, currentTime={currentTime}, timeDiff={timeDiff}");
 
+                // Determine judgement based on timing
                 if (timeDiff < 0.05f)
                 {
+                    UnityEngine.Debug.Log("PERFECT HIT!");
                     PerfectHit();
                     note.OnHit();
+                    if (judgementDisplay != null)
+                        judgementDisplay.ShowJudgement("Perfect");
                     return;
                 }
                 else if (timeDiff < 0.1f)
                 {
+                    UnityEngine.Debug.Log("GREAT HIT!");
                     GreatHit();
                     note.OnHit();
+                    if (judgementDisplay != null)
+                        judgementDisplay.ShowJudgement("Great");
                     return;
                 }
                 else if (timeDiff < 0.15f)
                 {
+                    UnityEngine.Debug.Log("GOOD HIT!");
                     GoodHit();
                     note.OnHit();
+                    if (judgementDisplay != null)
+                        judgementDisplay.ShowJudgement("Good");
                     return;
                 }
             }
@@ -142,6 +170,8 @@ public class GameManager : MonoBehaviour
     {
         earnedPoints += weight;
         notesPlayed++;
+
+        UnityEngine.Debug.Log($"Hit registered! earnedPoints={earnedPoints}, notesPlayed={notesPlayed}");
 
         currentCombo++;
         if (currentCombo > longestCombo)
@@ -161,9 +191,23 @@ public class GameManager : MonoBehaviour
         CheckSongComplete();
     }
 
-    public void PerfectHit() { perfectHits++; RegisterHit(perfectWeight); }
-    public void GreatHit() { greatHits++; RegisterHit(greatWeight); }
-    public void GoodHit() { goodHits++; RegisterHit(goodWeight); }
+    public void PerfectHit()
+    {
+        perfectHits++;
+        RegisterHit(perfectWeight);
+    }
+
+    public void GreatHit()
+    {
+        greatHits++;
+        RegisterHit(greatWeight);
+    }
+
+    public void GoodHit()
+    {
+        goodHits++;
+        RegisterHit(goodWeight);
+    }
 
     public void NoteMissed()
     {
@@ -172,6 +216,9 @@ public class GameManager : MonoBehaviour
         currentCombo = 0;
         Currentmultiplier = 1;
         multiplierTracker = 0;
+
+        if (judgementDisplay != null)
+            judgementDisplay.ShowJudgement("Miss");
 
         RefreshUI();
         CheckSongComplete();
@@ -240,16 +287,18 @@ public class GameManager : MonoBehaviour
     {
         isPaused = true;
         Time.timeScale = 0f;
-        if (Conductor.instance.song != null) Conductor.instance.song.Pause();
-        if (pausePanel != null) pausePanel.SetActive(true);
+        if (Conductor.instance != null) Conductor.instance.PauseSong();
+        if (pausePanel != null) pausePanel.SetActive(true);  // Show pause panel
+        UnityEngine.Debug.Log("Game Paused - Pause Panel Shown");
     }
 
     public void ResumeGame()
     {
         isPaused = false;
         Time.timeScale = 1f;
-        if (Conductor.instance.song != null) Conductor.instance.song.UnPause();
-        if (pausePanel != null) pausePanel.SetActive(false);
+        if (Conductor.instance != null) Conductor.instance.ResumeSong();
+        if (pausePanel != null) pausePanel.SetActive(false);  // Hide pause panel
+        UnityEngine.Debug.Log("Game Resumed - Pause Panel Hidden");
     }
 
     public void RestartSong()
