@@ -1,18 +1,17 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.IO;
 
 public class NoteSpawner : MonoBehaviour
 {
     public Conductor conductor;
     public GameObject notePrefab;
-    public TextAsset chartCSV;  
+    public TextAsset chartCSV;  // DRAG YOUR CSV FILE HERE
     public List<NoteData> chartNotes = new List<NoteData>();
 
     // Spawn settings
-    public float[] laneXPositions = new float[] { -1.52f, -0.52f, 0.52f, 1.52f };
-    public float spawnY = 6f;      
-    public float hitLineY = -3.4f;    
+    public float[] laneXPositions = new float[] { -1.53f, -0.47f, 0.52f, 1.51f };
+    public float spawnY = 6f;
+    public float hitLineY = -3.4f;
 
     private Dictionary<int, Queue<Note>> notesInLanes = new Dictionary<int, Queue<Note>>();
 
@@ -21,6 +20,12 @@ public class NoteSpawner : MonoBehaviour
         // Find Conductor if not assigned
         if (conductor == null)
             conductor = Conductor.instance;
+
+        if (conductor == null)
+        {
+            UnityEngine.Debug.LogError("NoteSpawner: Conductor not found!");
+            return;
+        }
 
         // Initialize note queues for each lane
         for (int i = 0; i < 4; i++)
@@ -32,6 +37,7 @@ public class NoteSpawner : MonoBehaviour
         if (chartCSV != null)
         {
             LoadChartFromCSV(chartCSV);
+            UnityEngine.Debug.Log($"NoteSpawner: Loaded {chartNotes.Count} notes from CSV");
         }
         else
         {
@@ -48,7 +54,7 @@ public class NoteSpawner : MonoBehaviour
         if (conductor == null || chartNotes == null || chartNotes.Count == 0)
             return;
 
-        float currentTime = conductor.SongTime;  
+        float currentTime = conductor.SongTime;
 
         // Spawn notes that are within the spawn window (5 seconds ahead)
         foreach (NoteData note in chartNotes)

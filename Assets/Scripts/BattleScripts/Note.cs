@@ -6,15 +6,16 @@ public class Note : MonoBehaviour
     public float targetTime;            // When this note should be hit (in seconds)
     public bool hasBeenHit = false;     // Has this note been hit or missed
 
-    public float scrollSpeed = 10f;     // Speed that notes travel down
-    public float hitLineY = -4f;        // Y position of the hit line
+    public float scrollSpeed = 20f;     // Speed notes travel down
+    public float hitLineY = -3.4f;      // Visual hit line position
+    public float spawnY = 6f;           // Spawn position
 
     void Start()
     {
         // Get scroll speed and hit line position from Conductor if available
         if (Conductor.instance != null)
         {
-            scrollSpeed = Conductor.instance.scrollSpeed;
+            scrollSpeed = Conductor.instance.scrollSpeed * 2f;
             hitLineY = Conductor.instance.hitLineY;
         }
     }
@@ -27,8 +28,13 @@ public class Note : MonoBehaviour
         // Move note down the screen
         transform.Translate(Vector3.down * scrollSpeed * Time.deltaTime);
 
-        // Check if note has passed the hit line (missed)
-        if (transform.position.y < hitLineY && !hasBeenHit)
+        // Check if note has passed the acceptable miss window
+        // Only mark as missed if we're well past the hit window
+        float currentTime = Conductor.instance != null ? Conductor.instance.SongTime : 0f;
+        float timeDiff = currentTime - targetTime;
+
+        // If note is more than 0.2 seconds past its target time, mark as missed
+        if (timeDiff > 0.2f && !hasBeenHit)
         {
             OnMiss();
         }
@@ -37,13 +43,15 @@ public class Note : MonoBehaviour
     public void OnHit()
     {
         hasBeenHit = true;
-        // Destroy the note after a short delay for visual feedback
-        Destroy(gameObject, 0.1f);
+        UnityEngine.Debug.Log($"Note hit! Lane {lane} at time {targetTime}");
+        // Immediately destroy the note
+        Destroy(gameObject);
     }
 
     void OnMiss()
     {
         hasBeenHit = true;
+        UnityEngine.Debug.Log($"Note missed! Lane {lane} at time {targetTime}");
         if (GameManager.instance != null)
         {
             GameManager.instance.NoteMissed();

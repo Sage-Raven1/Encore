@@ -312,7 +312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawner: {fileID: 2040059128}
-  conductor: {fileID: 0}
+  conductor: {fileID: 1847985636}
   judgementDisplay: {fileID: 0}
   StartPlaying: 0
   perfectWeight: 1
@@ -2531,7 +2531,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   song: {fileID: 111213197}
-  scrollSpeed: 5
+  scrollSpeed: 10
   hitLineY: -3.4
   spawnY: 6
 --- !u!4 &1847985637
@@ -2685,7 +2685,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   conductor: {fileID: 1847985636}
   notePrefab: {fileID: 3866442085912717000, guid: 546119d7504787f4ebecaa119363c168, type: 3}
-  chartCSV: {fileID: 4900000, guid: 547776fc6e580b14f9b363fa34879968, type: 3}
+  chartCSV: {fileID: 4900000, guid: 29213d94caa7d494796367c1fd23912a, type: 3}
   laneXPositions:
   - -1.52
   - -0.52
