@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.IO;
+using System.Globalization;
+
+// Force Unity's Debug even if an IDE auto-adds System.Diagnostics
+using Debug = UnityEngine.Debug;
 
 public class NoteSpawner : MonoBehaviour
 {
@@ -14,29 +17,21 @@ public class NoteSpawner : MonoBehaviour
     public float spawnY = 6f;
     public float hitLineY = -3.4f;
 
-    private Dictionary<int, Queue<Note>> notesInLanes = new Dictionary<int, Queue<Note>>();
+    int nextNoteIndex = 0;   // chart is sorted, so we only need to look at the next note
+
+    void Awake()
+    {
+        // Load in Awake so GameManager.Start can read chartNotes.Count
+        if (chartCSV != null)
+            LoadChartFromCSV(chartCSV);
+        else
+            Debug.LogWarning("NoteSpawner: No chart CSV assigned! Drag a CSV file into the chartCSV field.");
+    }
 
     void Start()
     {
-        // Find Conductor if not assigned
         if (conductor == null)
             conductor = Conductor.instance;
-
-        // Initialize note queues for each lane
-        for (int i = 0; i < 4; i++)
-        {
-            notesInLanes[i] = new Queue<Note>();
-        }
-
-        // Load chart from CSV if assigned
-        if (chartCSV != null)
-        {
-            LoadChartFromCSV(chartCSV);
-        }
-        else
-        {
-            UnityEngine.Debug.LogWarning("NoteSpawner: No chart CSV assigned! Drag a CSV file into the chartCSV field.");
-        }
     }
 
     void Update()
@@ -48,16 +43,16 @@ public class NoteSpawner : MonoBehaviour
         if (conductor == null || chartNotes == null || chartNotes.Count == 0)
             return;
 
+        // Spawn each note just as it would enter the screen at the top
+        float spawnAhead = conductor.TravelTime;
         float currentTime = conductor.SongTime;
 
-        // Spawn notes that are within the spawn window (5 seconds ahead)
-        foreach (NoteData note in chartNotes)
+        while (nextNoteIndex < chartNotes.Count &&
+               chartNotes[nextNoteIndex].time <= currentTime + spawnAhead)
         {
-            if (!note.hasBeenSpawned && note.time <= currentTime + 5f)
-            {
-                SpawnNote(note);
-                note.hasBeenSpawned = true;
-            }
+            SpawnNote(chartNotes[nextNoteIndex]);
+            chartNotes[nextNoteIndex].hasBeenSpawned = true;
+            nextNoteIndex++;
         }
     }
 
@@ -65,50 +60,42 @@ public class NoteSpawner : MonoBehaviour
     {
         if (notePrefab == null)
         {
-            UnityEngine.Debug.LogError("Note prefab not assigned!");
+            Debug.LogError("Note prefab not assigned!");
             return;
         }
 
-        // Get the X position for this lane
         if (noteData.lane < 0 || noteData.lane >= laneXPositions.Length)
         {
-            UnityEngine.Debug.LogError($"Invalid lane: {noteData.lane}");
+            Debug.LogWarning($"Invalid lane: {noteData.lane}");
             return;
         }
 
         float xPos = laneXPositions[noteData.lane];
 
-        // Instantiate the note at spawn position
         GameObject noteObj = Instantiate(notePrefab, new Vector3(xPos, spawnY, 0), Quaternion.identity);
         Note noteScript = noteObj.GetComponent<Note>();
 
         if (noteScript == null)
         {
-            UnityEngine.Debug.LogError("Note prefab missing Note script!");
+            Debug.LogError("Note prefab missing Note script!");
             Destroy(noteObj);
             return;
         }
 
-        // Set up the note with timing data
         noteScript.lane = noteData.lane;
         noteScript.targetTime = noteData.time;
-        noteScript.hasBeenHit = false;
-
-        // Add to lane queue for tracking
-        notesInLanes[noteData.lane].Enqueue(noteScript);
-
-        UnityEngine.Debug.Log($"Spawned note at time {noteData.time} in lane {noteData.lane}");
     }
 
     public void LoadChartFromCSV(TextAsset csvFile)
     {
         if (csvFile == null)
         {
-            UnityEngine.Debug.LogError("CSV file is null!");
+            Debug.LogError("CSV file is null!");
             return;
         }
 
         chartNotes.Clear();
+        nextNoteIndex = 0;
         string[] lines = csvFile.text.Split('\n');
 
         // Skip header line if it exists
@@ -121,25 +108,22 @@ public class NoteSpawner : MonoBehaviour
                 continue;
 
             string[] parts = line.Split(',');
-            if (parts.Length >= 2)
+            if (parts.Length >= 2 &&
+                float.TryParse(parts[0].Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out float time) &&
+                int.TryParse(parts[1].Trim(), out int lane) &&
+                lane >= 0 && lane < 4)
             {
-                if (float.TryParse(parts[0], out float time) && int.TryParse(parts[1], out int lane))
-                {
-                    if (lane >= 0 && lane < 4)
-                    {
-                        chartNotes.Add(new NoteData { time = time, lane = lane, hasBeenSpawned = false });
-                    }
-                }
+                chartNotes.Add(new NoteData { time = time, lane = lane, hasBeenSpawned = false });
             }
         }
 
-        // Sort by time
         chartNotes.Sort((a, b) => a.time.CompareTo(b.time));
 
-        UnityEngine.Debug.Log($"Loaded {chartNotes.Count} notes from chart: {csvFile.name}");
+        Debug.Log($"Loaded {chartNotes.Count} notes from chart: {csvFile.name}");
     }
 }
 
+[System.Serializable]
 public class NoteData
 {
     public float time;

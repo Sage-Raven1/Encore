@@ -1,8 +1,12 @@
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.InputSystem;
 using System.IO;
 using TMPro;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+
+// Force Unity's versions even if an IDE auto-adds System.Diagnostics or MediaTypeNames
+using Debug = UnityEngine.Debug;
+using Application = UnityEngine.Application;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,8 +14,6 @@ public class GameManager : MonoBehaviour
 
     //references
     public NoteSpawner spawner;        // drag NoteSpawner in
-    public Conductor conductor;
-    public JudgementDisplay judgementDisplay;
     public bool StartPlaying;
 
     // accuracy weighting
@@ -21,7 +23,7 @@ public class GameManager : MonoBehaviour
 
     float earnedPoints;
     int notesPlayed;
-    public float currentAccuracy;
+    public float currentAccuracy = 100f;
 
     //combo and multiplier
     public int currentCombo;
@@ -63,105 +65,32 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Currentmultiplier = 1;
-        UpdateAccuracyText();
+        RefreshUI();
+        // NoteSpawner loads its chart in Awake, so the count is ready here
+        TotalNotes = spawner != null ? spawner.chartNotes.Count : 0;
+        if (pausePanel != null) pausePanel.SetActive(false);
 
-        if (conductor == null)
-            conductor = Conductor.instance;
-
-        if (judgementDisplay == null)
-            judgementDisplay = FindObjectOfType<JudgementDisplay>();
-
-        // Count notes from spawner's chart
-        if (spawner != null && spawner.chartNotes != null)
-            TotalNotes = spawner.chartNotes.Count;
-
-        // ENSURE PAUSE PANEL IS INVISIBLE AT START
-        if (pausePanel != null)
-            pausePanel.SetActive(false);
     }
 
     void Update()
     {
+        if (Keyboard.current == null) return;
+
         if (!StartPlaying)
         {
             // press any key to begin (new Input System)
-            if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
+            if (Keyboard.current.anyKey.wasPressedThisFrame)
             {
                 StartPlaying = true;
-                conductor.StartSong();
+                Conductor.instance.StartSong();
             }
         }
-        else
+        else if (!songFinished)
         {
-            // Pause with ESC
-            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+            if (Keyboard.current.escapeKey.wasPressedThisFrame)
             {
                 if (isPaused) ResumeGame();
                 else PauseGame();
-            }
-
-            // Check for lane hits
-            if (!isPaused)
-            {
-                if (Keyboard.current.dKey.wasPressedThisFrame)
-                    OnLaneHit(0);
-
-                if (Keyboard.current.fKey.wasPressedThisFrame)
-                    OnLaneHit(1);
-
-                if (Keyboard.current.jKey.wasPressedThisFrame)
-                    OnLaneHit(2);
-
-                if (Keyboard.current.kKey.wasPressedThisFrame)
-                    OnLaneHit(3);
-            }
-        }
-    }
-
-    public void OnLaneHit(int lane)
-    {
-        if (!StartPlaying || isPaused) return;
-
-        float currentTime = conductor.SongTime;
-        Note[] allNotes = FindObjectsOfType<Note>();
-
-        UnityEngine.Debug.Log($"Lane {lane} hit at time {currentTime}. Found {allNotes.Length} notes total.");
-
-        foreach (Note note in allNotes)
-        {
-            if (note.lane == lane && !note.hasBeenHit)
-            {
-                float timeDiff = Mathf.Abs(note.targetTime - currentTime);
-                UnityEngine.Debug.Log($"Note in lane {lane}: targetTime={note.targetTime}, currentTime={currentTime}, timeDiff={timeDiff}");
-
-                // Determine judgement based on timing
-                if (timeDiff < 0.05f)
-                {
-                    UnityEngine.Debug.Log("PERFECT HIT!");
-                    PerfectHit();
-                    note.OnHit();
-                    if (judgementDisplay != null)
-                        judgementDisplay.ShowJudgement("Perfect");
-                    return;
-                }
-                else if (timeDiff < 0.1f)
-                {
-                    UnityEngine.Debug.Log("GREAT HIT!");
-                    GreatHit();
-                    note.OnHit();
-                    if (judgementDisplay != null)
-                        judgementDisplay.ShowJudgement("Great");
-                    return;
-                }
-                else if (timeDiff < 0.15f)
-                {
-                    UnityEngine.Debug.Log("GOOD HIT!");
-                    GoodHit();
-                    note.OnHit();
-                    if (judgementDisplay != null)
-                        judgementDisplay.ShowJudgement("Good");
-                    return;
-                }
             }
         }
     }
@@ -171,13 +100,11 @@ public class GameManager : MonoBehaviour
         earnedPoints += weight;
         notesPlayed++;
 
-        UnityEngine.Debug.Log($"Hit registered! earnedPoints={earnedPoints}, notesPlayed={notesPlayed}");
-
         currentCombo++;
         if (currentCombo > longestCombo)
             longestCombo = currentCombo;
 
-        if (Currentmultiplier - 1 < multiplierThreshold.Length)
+        if (multiplierThreshold != null && Currentmultiplier - 1 < multiplierThreshold.Length)
         {
             multiplierTracker++;
             if (multiplierThreshold[Currentmultiplier - 1] <= multiplierTracker)
@@ -191,23 +118,9 @@ public class GameManager : MonoBehaviour
         CheckSongComplete();
     }
 
-    public void PerfectHit()
-    {
-        perfectHits++;
-        RegisterHit(perfectWeight);
-    }
-
-    public void GreatHit()
-    {
-        greatHits++;
-        RegisterHit(greatWeight);
-    }
-
-    public void GoodHit()
-    {
-        goodHits++;
-        RegisterHit(goodWeight);
-    }
+    public void PerfectHit() { perfectHits++; RegisterHit(perfectWeight); }
+    public void GreatHit() { greatHits++; RegisterHit(greatWeight); }
+    public void GoodHit() { goodHits++; RegisterHit(goodWeight); }
 
     public void NoteMissed()
     {
@@ -216,9 +129,6 @@ public class GameManager : MonoBehaviour
         currentCombo = 0;
         Currentmultiplier = 1;
         multiplierTracker = 0;
-
-        if (judgementDisplay != null)
-            judgementDisplay.ShowJudgement("Miss");
 
         RefreshUI();
         CheckSongComplete();
@@ -265,9 +175,9 @@ public class GameManager : MonoBehaviour
 
     void SaveScoreToCSV()
     {
-        string path = Path.Combine(UnityEngine.Application.persistentDataPath, "scores.csv");
+        string path = Path.Combine(Application.persistentDataPath, "scores.csv");
         string result = currentAccuracy >= passThreshold ? "PASS" : "FAIL";
-        string row = currentAccuracy.ToString("F1") + "," +
+        string row = currentAccuracy.ToString("F1", System.Globalization.CultureInfo.InvariantCulture) + "," +
                      perfectHits + "," + greatHits + "," + goodHits + "," +
                      missHits + "," + longestCombo + "," + result + "\n";
         try
@@ -279,7 +189,7 @@ public class GameManager : MonoBehaviour
         }
         catch (IOException e)
         {
-            UnityEngine.Debug.LogWarning("Could not write score: " + e.Message);
+            Debug.LogWarning("Could not write score: " + e.Message);
         }
     }
 
@@ -287,18 +197,16 @@ public class GameManager : MonoBehaviour
     {
         isPaused = true;
         Time.timeScale = 0f;
-        if (Conductor.instance != null) Conductor.instance.PauseSong();
-        if (pausePanel != null) pausePanel.SetActive(true);  // Show pause panel
-        UnityEngine.Debug.Log("Game Paused - Pause Panel Shown");
+        Conductor.instance.Pause();   // freezes SongTime as well as the audio
+        if (pausePanel != null) pausePanel.SetActive(true);
     }
 
     public void ResumeGame()
     {
         isPaused = false;
         Time.timeScale = 1f;
-        if (Conductor.instance != null) Conductor.instance.ResumeSong();
-        if (pausePanel != null) pausePanel.SetActive(false);  // Hide pause panel
-        UnityEngine.Debug.Log("Game Resumed - Pause Panel Hidden");
+        Conductor.instance.Resume();
+        if (pausePanel != null) pausePanel.SetActive(false);
     }
 
     public void RestartSong()
@@ -310,6 +218,6 @@ public class GameManager : MonoBehaviour
     public void QuitToMenu()
     {
         Time.timeScale = 1f;
-        UnityEngine.Application.Quit();
+        Application.Quit();
     }
 }

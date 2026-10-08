@@ -1,55 +1,55 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Note : MonoBehaviour
 {
-    public int lane;                    // Which lane (0-3)
-    public float targetTime;            // When this note should be hit (in seconds)
-    public bool hasBeenHit = false;     // Has this note been hit or missed
+    public float targetTime;   // when this note should be hit
+    public int lane;
 
-    public float scrollSpeed = 10f;     // Speed that notes travel down
-    public float hitLineY = -4f;        // Y position of the hit line
+    bool obtained = false;
 
-    void Start()
-    {
-        // Get scroll speed and hit line position from Conductor if available
-        if (Conductor.instance != null)
-        {
-            scrollSpeed = Conductor.instance.scrollSpeed;
-            hitLineY = Conductor.instance.hitLineY;
-        }
-    }
+    // timing windows IN SECONDS (not distance!)
+    public float perfectWindow = 0.05f;
+    public float greatWindow = 0.10f;
+    public float goodWindow = 0.15f;
+
+    // lane keys (new Input System, to match GameManager)
+    static readonly Key[] laneKeys = { Key.A, Key.S, Key.L, Key.Semicolon };
 
     void Update()
     {
-        if (hasBeenHit)
-            return;
+        if (obtained) return;
+        if (GameManager.instance != null && GameManager.instance.isPaused) return;
 
-        // Move note down the screen
-        transform.Translate(Vector3.down * scrollSpeed * Time.deltaTime);
+        // position is derived from time-to-hit and scroll speed
+        float now = Conductor.instance.SongTime;
+        float timeLeft = targetTime - now;
+        float y = Conductor.instance.hitLineY + timeLeft * Conductor.instance.scrollSpeed;
+        transform.position = new Vector3(transform.position.x, y, 0f);
 
-        // Check if note has passed the hit line (missed)
-        if (transform.position.y < hitLineY && !hasBeenHit)
+        if (!Conductor.instance.Playing) return;
+
+        var kb = Keyboard.current;
+        if (kb != null && lane >= 0 && lane < laneKeys.Length && kb[laneKeys[lane]].wasPressedThisFrame)
         {
-            OnMiss();
+            float error = Mathf.Abs(targetTime - now);
+            if (error <= goodWindow)      // only judge if within the widest window
+            {
+                obtained = true;
+                if (error <= perfectWindow) GameManager.instance.PerfectHit();
+                else if (error <= greatWindow) GameManager.instance.GreatHit();
+                else GameManager.instance.GoodHit();
+                Destroy(gameObject);
+                return;
+            }
         }
-    }
 
-    public void OnHit()
-    {
-        hasBeenHit = true;
-        // Destroy the note after a short delay for visual feedback
-        Destroy(gameObject, 0.1f);
-    }
-
-    void OnMiss()
-    {
-        hasBeenHit = true;
-        if (GameManager.instance != null)
+        // missed: note fell past the hit line beyond the good window
+        if (now - targetTime > goodWindow)
         {
+            obtained = true;
             GameManager.instance.NoteMissed();
+            Destroy(gameObject);
         }
-
-       
-        Destroy(gameObject);
     }
 }
