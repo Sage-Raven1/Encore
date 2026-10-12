@@ -3,25 +3,25 @@ using UnityEngine.InputSystem;
 
 public class Note : MonoBehaviour
 {
-    public float targetTime;   // when this note should be hit
+    public float targetTime;
     public int lane;
 
     bool obtained = false;
 
-    // timing windows IN SECONDS (not distance!)
     public float perfectWindow = 0.05f;
     public float greatWindow = 0.10f;
     public float goodWindow = 0.15f;
 
-    // lane keys (new Input System, to match GameManager)
     static readonly Key[] laneKeys = { Key.A, Key.S, Key.L, Key.Semicolon };
 
     void Update()
     {
-        if (obtained) return;
-        if (GameManager.instance != null && GameManager.instance.isPaused) return;
+        if (Conductor.instance == null) return;
+        if (GameManager.instance == null) return;
 
-        // position is derived from time-to-hit and scroll speed
+        if (obtained) return;
+        if (GameManager.instance.isPaused) return;
+
         float now = Conductor.instance.SongTime;
         float timeLeft = targetTime - now;
         float y = Conductor.instance.hitLineY + timeLeft * Conductor.instance.scrollSpeed;
@@ -33,7 +33,7 @@ public class Note : MonoBehaviour
         if (kb != null && lane >= 0 && lane < laneKeys.Length && kb[laneKeys[lane]].wasPressedThisFrame)
         {
             float error = Mathf.Abs(targetTime - now);
-            if (error <= goodWindow)      // only judge if within the widest window
+            if (error <= goodWindow)
             {
                 obtained = true;
                 if (error <= perfectWindow) GameManager.instance.PerfectHit();
@@ -44,7 +44,6 @@ public class Note : MonoBehaviour
             }
         }
 
-        // missed: note fell past the hit line beyond the good window
         if (now - targetTime > goodWindow)
         {
             obtained = true;

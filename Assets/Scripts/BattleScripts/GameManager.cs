@@ -1,10 +1,9 @@
+using System.Collections;
 using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-
-// Force Unity's versions even if an IDE auto-adds System.Diagnostics or MediaTypeNames
 using Debug = UnityEngine.Debug;
 using Application = UnityEngine.Application;
 
@@ -12,11 +11,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    //references
-    public NoteSpawner spawner;        // drag NoteSpawner in
+    public NoteSpawner spawner;
     public bool StartPlaying;
 
-    // accuracy weighting
     public float perfectWeight = 1.0f;
     public float greatWeight = 0.66f;
     public float goodWeight = 0.33f;
@@ -25,7 +22,6 @@ public class GameManager : MonoBehaviour
     int notesPlayed;
     public float currentAccuracy = 100f;
 
-    //combo and multiplier
     public int currentCombo;
     public int longestCombo;
     public int Currentmultiplier;
@@ -37,25 +33,66 @@ public class GameManager : MonoBehaviour
     public TMP_Text multiText;
     public TMP_Text comboText;
 
-    // note tally
     public int TotalNotes;
     public int goodHits;
     public int greatHits;
     public int perfectHits;
     public int missHits;
 
-    // pass fail threshold
     public float passThreshold = 50f;
 
-    // pause menu
     public GameObject pausePanel;
     public bool isPaused;
 
-    // scenes
-    public string resultsSceneName = "Ranking Display";
-    public string gameplaySceneName = "Round1";
+    [Header("Resume Countdown")]
+    public float resumeDelay = 3f;
+    public TMP_Text countdownText;
+    bool isResuming;
+
+    [Header("Chart Info")]
+    public string songName;
+    public string difficulty;
+
+    [Header("Results")]
+#if UNITY_EDITOR
+    public UnityEditor.SceneAsset resultsScene;
+#endif
+    [SerializeField] string resultsSceneName = "Ranking Display";
+
+    [Header("After Results")]
+#if UNITY_EDITOR
+    public UnityEditor.SceneAsset afterResultsContinue;
+    public UnityEditor.SceneAsset afterResultsRetry;
+#endif
+    [SerializeField] string afterResultsContinueName;
+    [SerializeField] string afterResultsRetryName;
+
+    [Header("Restart")]
+#if UNITY_EDITOR
+    public UnityEditor.SceneAsset restartScene;
+#endif
+    [SerializeField] string restartSceneName;
+
+    [Header("Quit To Menu")]
+#if UNITY_EDITOR
+    public UnityEditor.SceneAsset menuScene;
+#endif
+    [SerializeField] string menuSceneName;
 
     bool songFinished;
+
+#if UNITY_EDITOR
+    void OnValidate()
+    {
+        if (menuScene != null)
+            menuSceneName = menuScene.name;
+        if (resultsScene != null)
+            resultsSceneName = resultsScene.name;
+        restartSceneName = restartScene != null ? restartScene.name : "";
+        afterResultsContinueName = afterResultsContinue != null ? afterResultsContinue.name : "";
+        afterResultsRetryName = afterResultsRetry != null ? afterResultsRetry.name : "";
+    }
+#endif
 
     void Awake()
     {
@@ -66,28 +103,22 @@ public class GameManager : MonoBehaviour
     {
         Currentmultiplier = 1;
         RefreshUI();
-        // NoteSpawner loads its chart in Awake, so the count is ready here
         TotalNotes = spawner != null ? spawner.chartNotes.Count : 0;
-        if (pausePanel != null) pausePanel.SetActive(false);
-
     }
 
     void Update()
     {
-        if (Keyboard.current == null) return;
-
         if (!StartPlaying)
         {
-            // press any key to begin (new Input System)
-            if (Keyboard.current.anyKey.wasPressedThisFrame)
+            if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
             {
                 StartPlaying = true;
                 Conductor.instance.StartSong();
             }
         }
-        else if (!songFinished)
+        else
         {
-            if (Keyboard.current.escapeKey.wasPressedThisFrame)
+            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame && !isResuming)
             {
                 if (isPaused) ResumeGame();
                 else PauseGame();
@@ -169,6 +200,8 @@ public class GameManager : MonoBehaviour
     void SongComplete()
     {
         SaveScoreToCSV();
+        RoundTransition.ContinueScene = afterResultsContinueName;
+        RoundTransition.RetryScene = afterResultsRetryName;
         Time.timeScale = 1f;
         SceneManager.LoadScene(resultsSceneName);
     }
@@ -179,12 +212,14 @@ public class GameManager : MonoBehaviour
         string result = currentAccuracy >= passThreshold ? "PASS" : "FAIL";
         string row = currentAccuracy.ToString("F1", System.Globalization.CultureInfo.InvariantCulture) + "," +
                      perfectHits + "," + greatHits + "," + goodHits + "," +
-                     missHits + "," + longestCombo + "," + result + "\n";
+                     missHits + "," + longestCombo + "," + result + "," +
+                     SceneManager.GetActiveScene().name + "," +
+                     CleanField(GetSongName()) + "," + CleanField(difficulty) + "\n";
         try
         {
             if (!File.Exists(path))
                 File.WriteAllText(path,
-                    "Accuracy,Perfects,Greats,Goods,Misses,LongestCombo,Result\n");
+                    "Accuracy,Perfects,Greats,Goods,Misses,LongestCombo,Result,Round,Song,Difficulty\n");
             File.AppendAllText(path, row);
         }
         catch (IOException e)
@@ -193,31 +228,73 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    string GetSongName()
+    {
+        if (!string.IsNullOrEmpty(songName)) return songName;
+        if (spawner != null && spawner.chartCSV != null) return spawner.chartCSV.name;
+        return SceneManager.GetActiveScene().name;
+    }
+
+    string CleanField(string value)
+    {
+        if (string.IsNullOrEmpty(value)) return "Normal";
+        return value.Replace(",", " ").Replace("\n", " ").Replace("\r", " ").Trim();
+    }
+
     public void PauseGame()
     {
         isPaused = true;
         Time.timeScale = 0f;
-        Conductor.instance.Pause();   // freezes SongTime as well as the audio
+        Conductor.instance.Pause();
         if (pausePanel != null) pausePanel.SetActive(true);
     }
 
     public void ResumeGame()
     {
+        if (!isPaused || isResuming) return;
+        StartCoroutine(ResumeCountdown());
+    }
+
+    IEnumerator ResumeCountdown()
+    {
+        isResuming = true;
+        if (pausePanel != null) pausePanel.SetActive(false);
+        if (countdownText != null) countdownText.gameObject.SetActive(true);
+
+        float remaining = resumeDelay;
+        while (remaining > 0f)
+        {
+            if (countdownText != null)
+                countdownText.text = Mathf.CeilToInt(remaining).ToString();
+            yield return null;
+            remaining -= Time.unscaledDeltaTime;
+        }
+
+        if (countdownText != null) countdownText.gameObject.SetActive(false);
+
         isPaused = false;
+        isResuming = false;
         Time.timeScale = 1f;
         Conductor.instance.Resume();
-        if (pausePanel != null) pausePanel.SetActive(false);
     }
 
     public void RestartSong()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(gameplaySceneName);
+        if (string.IsNullOrEmpty(restartSceneName))
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        else
+            SceneManager.LoadScene(restartSceneName);
     }
 
     public void QuitToMenu()
     {
         Time.timeScale = 1f;
-        Application.Quit();
+        if (string.IsNullOrEmpty(menuSceneName))
+        {
+            Debug.LogWarning("GameManager: No menu scene assigned.");
+            return;
+        }
+        SceneManager.LoadScene(menuSceneName);
     }
 }
