@@ -12,8 +12,6 @@ public class Note : MonoBehaviour
     public float greatWindow = 0.10f;
     public float goodWindow = 0.15f;
 
-    static readonly Key[] laneKeys = { Key.A, Key.S, Key.L, Key.Semicolon };
-
     void Update()
     {
         if (Conductor.instance == null) return;
@@ -29,6 +27,7 @@ public class Note : MonoBehaviour
 
         if (!Conductor.instance.Playing) return;
 
+        Key[] laneKeys = GameSettings.LaneKeys;
         var kb = Keyboard.current;
         if (kb != null && lane >= 0 && lane < laneKeys.Length && kb[laneKeys[lane]].wasPressedThisFrame)
         {

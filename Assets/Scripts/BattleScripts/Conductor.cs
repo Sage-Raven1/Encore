@@ -5,9 +5,9 @@ public class Conductor : MonoBehaviour
     public static Conductor instance;
 
     public AudioSource song;
-    public float scrollSpeed = 5f;     // adjustable! units per second
-    public float hitLineY = -3.4f;     // where notes are judged
-    public float spawnY = 6f;          // where notes appear
+    public float scrollSpeed = 5f;
+    public float hitLineY = -3.4f;
+    public float spawnY = 6f;
 
     double dspStart;
     double pauseStartDsp;
@@ -15,7 +15,13 @@ public class Conductor : MonoBehaviour
     public float SongTime { get; private set; }
     public bool Playing { get; private set; }
 
-    void Awake() { instance = this; }
+    void Awake()
+    {
+        instance = this;
+        scrollSpeed = GameSettings.ScrollSpeed;
+        if (song != null) song.volume = GameSettings.MusicVolume;
+        SongTime = -GameSettings.AudioOffset / 1000f;
+    }
 
     public void StartSong()
     {
@@ -24,9 +30,6 @@ public class Conductor : MonoBehaviour
         Playing = true;
     }
 
-    // dspTime keeps running while paused, so we shift the start time
-    // forward by however long we were paused. Otherwise notes jump ahead
-    // and get counted as misses after resuming.
     public void Pause()
     {
         if (!Playing) return;
@@ -46,9 +49,8 @@ public class Conductor : MonoBehaviour
     void Update()
     {
         if (Playing)
-            SongTime = (float)(AudioSettings.dspTime - dspStart);
+            SongTime = (float)(AudioSettings.dspTime - dspStart) - GameSettings.AudioOffset / 1000f;
     }
 
-    // how long a note takes to fall from spawn to hit line, at current speed
     public float TravelTime => (spawnY - hitLineY) / scrollSpeed;
 }

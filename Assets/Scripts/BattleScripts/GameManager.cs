@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    // setting up base values
     public NoteSpawner spawner;
     public bool StartPlaying;
 
@@ -28,7 +29,7 @@ public class GameManager : MonoBehaviour
     public int multiplierTracker;
     public int[] multiplierThreshold;
 
-    [Header("UI Text")]
+    // UI Text
     public TMP_Text accuracyText;
     public TMP_Text multiText;
     public TMP_Text comboText;
@@ -44,22 +45,22 @@ public class GameManager : MonoBehaviour
     public GameObject pausePanel;
     public bool isPaused;
 
-    [Header("Resume Countdown")]
+    [// resume countdown
     public float resumeDelay = 3f;
     public TMP_Text countdownText;
     bool isResuming;
 
-    [Header("Chart Info")]
+    //chart info
     public string songName;
     public string difficulty;
 
-    [Header("Results")]
+    // results info
 #if UNITY_EDITOR
     public UnityEditor.SceneAsset resultsScene;
 #endif
     [SerializeField] string resultsSceneName = "Ranking Display";
 
-    [Header("After Results")]
+    // after results (dependant on which round/ scene)
 #if UNITY_EDITOR
     public UnityEditor.SceneAsset afterResultsContinue;
     public UnityEditor.SceneAsset afterResultsRetry;
@@ -67,13 +68,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] string afterResultsContinueName;
     [SerializeField] string afterResultsRetryName;
 
-    [Header("Restart")]
+    // restart scene
 #if UNITY_EDITOR
     public UnityEditor.SceneAsset restartScene;
 #endif
     [SerializeField] string restartSceneName;
 
-    [Header("Quit To Menu")]
+    // Quit To Menu
 #if UNITY_EDITOR
     public UnityEditor.SceneAsset menuScene;
 #endif
