@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
     public GameObject pausePanel;
     public bool isPaused;
 
-    [// resume countdown
+    // resume countdown
     public float resumeDelay = 3f;
     public TMP_Text countdownText;
     bool isResuming;
