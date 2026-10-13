@@ -67,6 +67,7 @@ public class SettingsMenu : MonoBehaviour
         if (settingsPanel != null) settingsPanel.SetActive(false);
     }
 
+
     // slider 
     void SetupSlider(Slider slider, float min, float max)
     {

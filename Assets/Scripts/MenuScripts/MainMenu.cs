@@ -1,59 +1,57 @@
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static System.Net.Mime.MediaTypeNames;
 using Debug = UnityEngine.Debug;
-using Application = UnityEngine.Application;
 
 public class MainMenu : MonoBehaviour
 {
-    [Header("Story Mode")]
-#if UNITY_EDITOR
-    public UnityEditor.SceneAsset storyScene;
-#endif
-    [SerializeField] string storySceneName;
+    [SerializeField] private string storySceneName;
+    [SerializeField] private string freeplaySceneName;
+    public GameObject SettingsPanel;
 
-    [Header("Freeplay")]
-    // freeplay scene (shows up in inspector)
-#if UNITY_EDITOR
-    public UnityEditor.SceneAsset freeplayScene;
-#endif
-    [SerializeField] string freeplaySceneName;
 
-#if UNITY_EDITOR
-    void OnValidate()
+    void Start()
     {
-        storySceneName = storyScene != null ? storyScene.name : "";
-        freeplaySceneName = freeplayScene != null ? freeplayScene.name : "";
+        if (SettingsPanel != null) SettingsPanel.SetActive(false);
     }
-#endif
 
-    // button scene switching/ functionality
+    // start story function -> need to attatch to the story button
     public void StartStory()
     {
         LoadScene(storySceneName, "Story");
     }
 
+    // same thing with story
     public void StartFreeplay()
     {
         LoadScene(freeplaySceneName, "Freeplay");
     }
 
-    public void QuitGame()
+    public void OpenSettings()
     {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
+        if (SettingsPanel != null) SettingsPanel.SetActive(true);
+
     }
 
-    // load scene function
-    void LoadScene(string sceneName, string label)
+    public void QuitGame()
+    {
+    #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false; 
+    #else
+            Application.Quit();
+    #endif
+    }
+
+   
+    public void LoadScene(string sceneName, string label)
     {
         if (string.IsNullOrEmpty(sceneName))
         {
             Debug.LogWarning("MainMenu: No " + label + " scene assigned.");
             return;
         }
+
         Time.timeScale = 1f;
         SceneManager.LoadScene(sceneName);
     }
