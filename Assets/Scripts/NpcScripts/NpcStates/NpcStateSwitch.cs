@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NpcStates : MonoBehaviour
+public class NpcStateSwitch : MonoBehaviour
 {
     public enum NpcState
     {

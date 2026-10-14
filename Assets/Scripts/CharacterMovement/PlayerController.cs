@@ -16,25 +16,13 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D body;
     private Animator animator;
 
-    public float moveSpeed = 1f;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
+    public float moveSpeed = 5f;
 
     void Awake()
     {
         body = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         controls = new CharacterInput();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     private void FixedUpdate()

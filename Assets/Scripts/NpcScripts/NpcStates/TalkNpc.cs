@@ -1,18 +1,50 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using System.Diagnostics;
 
 public class TalkNpc : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private Rigidbody2D _body;
+
+    public DialogueSoScript dialogueSO;
+    public TMP_Text dialoguePrompt;
+
+    private void Awake()
     {
-        
+        _body = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        dialoguePrompt.enabled = false;
+    }
+
+    private void OnEnable()
+    {
+        dialoguePrompt.enabled = true;
+        _body.bodyType = RigidbodyType2D.Kinematic;
+    }
+
+    private void OnDisable()
+    {
+        dialoguePrompt.enabled = false;
+        _body.bodyType = RigidbodyType2D.Dynamic;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (DialogueManager.Instance.isDialogueActive)
+            {
+                DialogueManager.Instance.AdvanceDialogue();
+            }
+            else
+            {
+                DialogueManager.Instance.StartDialogue(dialogueSO);
+            }
+        }
     }
 }

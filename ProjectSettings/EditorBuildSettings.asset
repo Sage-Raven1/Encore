@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/OpeningMenu/MainMenu.unity
+    path: Assets/Scenes/OpeningMenu/TestStuffPlace.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
     path: Assets/Scenes/Part1/Backstage.unity
@@ -17,4 +17,94 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Part1/Park.unity
     guid: c934540c2b335f8439a10bd1457d18f2
+  - enabled: 1
+    path: Assets/Scenes/OpeningMenu/MenuScreen.unity
+    guid: a6f4bd826a5e4d24c89cc57c6b714abe
+  - enabled: 1
+    path: Assets/Scenes/OpeningMenu/ResultsDisplay.unity
+    guid: a2cc1a14b25443e4697b25b555d108bf
+  - enabled: 1
+    path: Assets/Scenes/Part1/ParkCliff.unity
+    guid: 9fbc59d351bc96d4992071a5de8507ae
+  - enabled: 1
+    path: Assets/Scenes/Part1/Round1.unity
+    guid: b17e0b2b90656864e875fadc5eba8ec7
+  - enabled: 1
+    path: Assets/Scenes/Part1/YellowRoad1.unity
+    guid: 799a3412169adf74991c60908f3b349a
+  - enabled: 1
+    path: Assets/Scenes/Part2/City.unity
+    guid: 2f9f7805940cbc64996f55054b851f84
+  - enabled: 1
+    path: Assets/Scenes/Part2/Island.unity
+    guid: 60431e5c64651074383c052579424028
+  - enabled: 1
+    path: Assets/Scenes/Part2/Round2.unity
+    guid: d8a0b594ac473f74c8baaf8677021729
+  - enabled: 1
+    path: Assets/Scenes/Part2/TaxiStation.unity
+    guid: 3118891c0ecf12c478854201820c7024
+  - enabled: 1
+    path: Assets/Scenes/Part2/StageTwo.unity
+    guid: 3240b98340f018a4d97401f5b4b741b2
+  - enabled: 1
+    path: Assets/Scenes/Part3/DesertCity.unity
+    guid: 790d70498c6821a4ea827528d12be588
+  - enabled: 1
+    path: Assets/Scenes/Part3/GasStation.unity
+    guid: a57fc2cddb959c948a9da5ac90f08306
+  - enabled: 1
+    path: Assets/Scenes/Part3/Oasis.unity
+    guid: 49765a41d61a47840b2baa79e690e569
+  - enabled: 1
+    path: Assets/Scenes/Part3/Round3.unity
+    guid: 0b798fe8ca9a0734d945d2d64e7ffd63
+  - enabled: 1
+    path: Assets/Scenes/Part3/SandDunes.unity
+    guid: c8ddccc2fae3c0f44bb6d5cfdf8e29cb
+  - enabled: 1
+    path: Assets/Scenes/Part3/StageThree.unity
+    guid: 28bac61ddc8455e4a8a85062d7b598df
+  - enabled: 1
+    path: Assets/Scenes/Part3/TrainStation.unity
+    guid: ff638a9db939f15469f6fe9f718710c9
+  - enabled: 1
+    path: Assets/Scenes/Part4/FouthTheatre.unity
+    guid: 68b8ddd039015b84198aec12b6a4a893
+  - enabled: 1
+    path: Assets/Scenes/Part4/OldCity.unity
+    guid: bf69fe8664d52174a8420b5e9aab1439
+  - enabled: 1
+    path: Assets/Scenes/Part4/OldHome.unity
+    guid: 12a27a8a77dda5e4599ef943aca242ec
+  - enabled: 1
+    path: Assets/Scenes/Part4/Round4.unity
+    guid: 3dca2b1a54ca1f74ba456460a686a296
+  - enabled: 1
+    path: Assets/Scenes/Part4/StageFour.unity
+    guid: b2033ffc41f3ff44fbc206860b48a0de
+  - enabled: 1
+    path: Assets/Scenes/Part4/TrainCenter.unity
+    guid: b39515a847f3bd64e94a3cac3c8fc837
+  - enabled: 1
+    path: Assets/Scenes/Part5/BigCity.unity
+    guid: 6a2ca71d880d70548938ddd2c2b768c6
+  - enabled: 1
+    path: Assets/Scenes/Part5/Cave.unity
+    guid: 3cf7a8560d7e7c6449c9b3043651e738
+  - enabled: 1
+    path: Assets/Scenes/Part5/Forest.unity
+    guid: 45025782f8691f9449fae8a25c0f6074
+  - enabled: 1
+    path: Assets/Scenes/Part5/OperaHouse.unity
+    guid: 2d04027dd0c3c9b47a7c5ae1c09e8cd8
+  - enabled: 1
+    path: Assets/Scenes/Part5/Round5.unity
+    guid: 8e3fbf96f83844d4b9cc42788a2e37a7
+  - enabled: 1
+    path: Assets/Scenes/Part5/StageFive.unity
+    guid: e2918b2cb0147b140875af31833e9cee
+  - enabled: 1
+    path: Assets/Scenes/Part5/YellowRoad4.unity
+    guid: 9d161ac31dcd4cd4ab9867a3430fac46
   m_configObjects: {}
