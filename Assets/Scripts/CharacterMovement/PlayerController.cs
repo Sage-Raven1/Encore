@@ -10,11 +10,12 @@ public class PlayerController : MonoBehaviour
     private CharacterInput controls;
     private Vector2 move;
 
-    private float moveAngle;
-    private float direction;
+    public float moveAngle;
+    public float direction;
 
     private Rigidbody2D body;
     private Animator animator;
+    private SpriteRenderer spriteRenderer;
 
     public float moveSpeed = 5f;
 
@@ -23,6 +24,7 @@ public class PlayerController : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         controls = new CharacterInput();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void FixedUpdate()
@@ -44,10 +46,10 @@ public class PlayerController : MonoBehaviour
 
     private void PlayerAnimSwitch(float angle)
     {
-        bool moving = (move.x + move.y == 0) ? false : true;
+        bool moving = (body.velocity.x + body.velocity.y == 0) ? false : true;
         if (moving)
         {
-            direction = angle;
+            direction = Mathf.Abs(angle);
             switch (direction)
             {
                 case float n when (n < 45):
@@ -63,6 +65,7 @@ public class PlayerController : MonoBehaviour
                     break;
 
             }
+            spriteRenderer.flipX = moveAngle < 0 ? true : false;
         } 
         else
         {
@@ -83,6 +86,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    
 
 
     private void PlayerMovement()
