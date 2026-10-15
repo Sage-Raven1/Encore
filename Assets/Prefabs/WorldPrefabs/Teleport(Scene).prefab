@@ -72,5 +72,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneToLoad: 
-  fadeTime: 5
+  fadeTime: 3
   newPlayerLocation: {x: 0, y: 0}

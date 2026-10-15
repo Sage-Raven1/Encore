@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using System.Diagnostics;
 
 public class TalkNpc : MonoBehaviour
 {
@@ -37,6 +36,7 @@ public class TalkNpc : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            // Debug.Log("pressed");
             if (DialogueManager.Instance.isDialogueActive)
             {
                 DialogueManager.Instance.AdvanceDialogue();

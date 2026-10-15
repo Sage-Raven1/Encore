@@ -58,7 +58,7 @@ public class DialogueManager : MonoBehaviour
     {
         DialogueLine line = _currentDialogue.dialogueLines[_dialogueIndex];
 
-        actorName.text = line.speaker.actorName;
+        actorName.text = line.speaker.actorName; //speaker
         dialogueText.text = line.text;
         dialogueCanvas.enabled = true;
 
