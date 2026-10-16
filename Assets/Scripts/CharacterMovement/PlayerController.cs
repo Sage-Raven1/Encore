@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
 
     private void PlayerAnimSwitch(float angle)
     {
-        bool moving = (body.velocity.x + body.velocity.y == 0) ? false : true;
+        bool moving = (Mathf.Abs(body.velocity.x) + Mathf.Abs(body.velocity.y) == 0) ? false : true;
         if (moving)
         {
             direction = Mathf.Abs(angle);
