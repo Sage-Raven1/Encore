@@ -42,17 +42,11 @@ EditorBuildSettings:
     path: Assets/Scenes/Part2/Round2.unity
     guid: d8a0b594ac473f74c8baaf8677021729
   - enabled: 1
-    path: Assets/Scenes/Part2/TaxiStation.unity
-    guid: 3118891c0ecf12c478854201820c7024
-  - enabled: 1
     path: Assets/Scenes/Part2/StageTwo.unity
     guid: 3240b98340f018a4d97401f5b4b741b2
   - enabled: 1
     path: Assets/Scenes/Part3/DesertCity.unity
     guid: 790d70498c6821a4ea827528d12be588
-  - enabled: 1
-    path: Assets/Scenes/Part3/GasStation.unity
-    guid: a57fc2cddb959c948a9da5ac90f08306
   - enabled: 1
     path: Assets/Scenes/Part3/Oasis.unity
     guid: 49765a41d61a47840b2baa79e690e569

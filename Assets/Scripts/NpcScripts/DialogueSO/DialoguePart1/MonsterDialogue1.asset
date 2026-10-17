@@ -15,3 +15,13 @@ MonoBehaviour:
   dialogueLines:
   - speaker: {fileID: 11400000, guid: 7d42415a856fb234dbc7d584484851bd, type: 2}
     text: ...
+  - speaker: {fileID: 11400000, guid: 7d42415a856fb234dbc7d584484851bd, type: 2}
+    text: I used to live here with my husband until one day...
+  - speaker: {fileID: 11400000, guid: 7d42415a856fb234dbc7d584484851bd, type: 2}
+    text: ...
+  - speaker: {fileID: 11400000, guid: 7d42415a856fb234dbc7d584484851bd, type: 2}
+    text: I unmasked my true self in front of him but...
+  - speaker: {fileID: 11400000, guid: 7d42415a856fb234dbc7d584484851bd, type: 2}
+    text: I forgot anyone who saw my real face would forget all their memories.
+  - speaker: {fileID: 11400000, guid: 7d42415a856fb234dbc7d584484851bd, type: 2}
+    text: Don't worry, I got plastic surgery a few months ago.

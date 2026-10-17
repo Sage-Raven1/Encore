@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4220acdd7f5ec64ab067873248543d8, type: 3}
+  m_Name: DialogueBunchOfHouses
+  m_EditorClassIdentifier: 
+  dialogueLines:
+  - speaker: {fileID: 11400000, guid: 1d3c8c7c5da0a564ea3fc764ad75d341, type: 2}
+    text: Three houses, less than whats expected for a city.
+  - speaker: {fileID: 11400000, guid: 1d3c8c7c5da0a564ea3fc764ad75d341, type: 2}
+    text: Don't go inside, the owners didn't invite you.
+  - speaker: {fileID: 11400000, guid: 1d3c8c7c5da0a564ea3fc764ad75d341, type: 2}
+    text: Their almost like a bunch of friends.

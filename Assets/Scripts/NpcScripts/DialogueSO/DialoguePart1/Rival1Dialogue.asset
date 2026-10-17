@@ -14,4 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueLines:
   - speaker: {fileID: 11400000, guid: d3a5b56e5779d644cb7c43bc9dcfb6c5, type: 2}
-    text: test
+    text: Hey Ebi, ready for the show?
+  - speaker: {fileID: 11400000, guid: d3a5b56e5779d644cb7c43bc9dcfb6c5, type: 2}
+    text: You better be, we're the ones on stage.
+  - speaker: {fileID: 11400000, guid: d3a5b56e5779d644cb7c43bc9dcfb6c5, type: 2}
+    text: ...Haha?
+  - speaker: {fileID: 11400000, guid: a3bfa58710eb5004a8cef29e392d585a, type: 2}
+    text: ...
+  - speaker: {fileID: 11400000, guid: d3a5b56e5779d644cb7c43bc9dcfb6c5, type: 2}
+    text: Walk up to me on stage to start the fight.
+  - speaker: {fileID: 11400000, guid: d3a5b56e5779d644cb7c43bc9dcfb6c5, type: 2}
+    text: Good luck!

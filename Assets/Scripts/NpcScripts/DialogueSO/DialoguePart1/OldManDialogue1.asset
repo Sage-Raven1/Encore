@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4220acdd7f5ec64ab067873248543d8, type: 3}
+  m_Name: OldManDialogue1
+  m_EditorClassIdentifier: 
+  dialogueLines:
+  - speaker: {fileID: 11400000, guid: 303fb22277d7a8e4eb39a96753b0da77, type: 2}
+    text: Hey, kid, whats up. Don't tell me anything important I have a bad memory.
+  - speaker: {fileID: 11400000, guid: 303fb22277d7a8e4eb39a96753b0da77, type: 2}
+    text: I don't remember a thing, but I think I forgot to do something very important.
+  - speaker: {fileID: 11400000, guid: 303fb22277d7a8e4eb39a96753b0da77, type: 2}
+    text: I have a bad memory by the way.
