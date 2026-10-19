@@ -10,15 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4220acdd7f5ec64ab067873248543d8, type: 3}
-  m_Name: Manager1Required
+  m_Name: ManagerDialogue2
   m_EditorClassIdentifier: 
   dialogueLines:
   - speaker: {fileID: 11400000, guid: 914e1dba4a0bb0e4fa9172311b0e912f, type: 2}
-    text: You've met my daughter?!
-  - speaker: {fileID: 11400000, guid: 914e1dba4a0bb0e4fa9172311b0e912f, type: 2}
-    text: So sorry for her rudeness, shes training for the olympics.
-  - speaker: {fileID: 11400000, guid: 914e1dba4a0bb0e4fa9172311b0e912f, type: 2}
-    text: Speaking of which, is taking place at the location of your final match...
+    text: You met my daughter?! I'm so sorry.
   dialogueOptions: []
   requiredNpcs:
   - {fileID: 11400000, guid: 10d9471cf6d23c84dab9550d29fedf85, type: 2}

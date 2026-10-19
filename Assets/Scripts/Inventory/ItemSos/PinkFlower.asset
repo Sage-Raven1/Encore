@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7acd5d9fc802112459b68ae2e0f9c1ea, type: 3}
+  m_Name: PinkFlower
+  m_EditorClassIdentifier: 
+  itemName: Pink Flower
+  itemDescription: Picked from the park.
+  icon: {fileID: 2135263252, guid: d0c5f0da6f1502640a6257866c0b2eab, type: 3}
