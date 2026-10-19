@@ -135,6 +135,18 @@ PrefabInstance:
       propertyPath: currentState
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6889374220931268611, guid: 352239cf47235574a838554883cd2904, type: 3}
+      propertyPath: m_Radius
+      value: 1.1843827
+      objectReference: {fileID: 0}
+    - target: {fileID: 6889374220931268611, guid: 352239cf47235574a838554883cd2904, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.07604241
+      objectReference: {fileID: 0}
+    - target: {fileID: 6889374220931268611, guid: 352239cf47235574a838554883cd2904, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6889374220931268614, guid: 352239cf47235574a838554883cd2904, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -528,6 +540,18 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 746294388}
     m_Modifications:
+    - target: {fileID: 6889374220931268611, guid: 352239cf47235574a838554883cd2904, type: 3}
+      propertyPath: m_Radius
+      value: 1.3778305
+      objectReference: {fileID: 0}
+    - target: {fileID: 6889374220931268611, guid: 352239cf47235574a838554883cd2904, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.04433441
+      objectReference: {fileID: 0}
+    - target: {fileID: 6889374220931268611, guid: 352239cf47235574a838554883cd2904, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6889374220931268614, guid: 352239cf47235574a838554883cd2904, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -592,6 +616,18 @@ PrefabInstance:
       propertyPath: dialoguePrompt
       value: 
       objectReference: {fileID: 1866498493}
+    - target: {fileID: 6889374220931268863, guid: 352239cf47235574a838554883cd2904, type: 3}
+      propertyPath: conversations.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6889374220931268863, guid: 352239cf47235574a838554883cd2904, type: 3}
+      propertyPath: conversations.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: d21bea341e8d29a46b42bed100a99ce9, type: 2}
+    - target: {fileID: 6889374220931268863, guid: 352239cf47235574a838554883cd2904, type: 3}
+      propertyPath: conversations.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: b381355dd6e433843b93851cdb059392, type: 2}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 352239cf47235574a838554883cd2904, type: 3}

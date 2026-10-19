@@ -90,7 +90,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Part5/Forest.unity
     guid: 45025782f8691f9449fae8a25c0f6074
   - enabled: 1
-    path: Assets/Scenes/Part5/OperaHouse.unity
+    path: Assets/Scenes/Part5/FifthTheatre.unity
     guid: 2d04027dd0c3c9b47a7c5ae1c09e8cd8
   - enabled: 1
     path: Assets/Scenes/Part5/Round5.unity

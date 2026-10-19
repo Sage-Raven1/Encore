@@ -39,6 +39,7 @@ public class NpcStateSwitch : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            //Debug.Log("Player entered trigger");
             SwitchState(NpcState.Talk);
         }
     }

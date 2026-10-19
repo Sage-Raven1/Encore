@@ -329,14 +329,14 @@ MonoBehaviour:
   difficulty: Easy
   resultsScene: {fileID: 102900000, guid: a2cc1a14b25443e4697b25b555d108bf, type: 3}
   resultsSceneName: ResultsDisplay
-  afterResultsContinue: {fileID: 102900000, guid: d8a0b594ac473f74c8baaf8677021729, type: 3}
-  afterResultsRetry: {fileID: 0}
-  afterResultsContinueName: Round2
-  afterResultsRetryName: 
+  afterResultsContinue: {fileID: 102900000, guid: 2f9f7805940cbc64996f55054b851f84, type: 3}
+  afterResultsRetry: {fileID: 102900000, guid: d8a0b594ac473f74c8baaf8677021729, type: 3}
+  afterResultsContinueName: City
+  afterResultsRetryName: Round2
   restartScene: {fileID: 102900000, guid: d8a0b594ac473f74c8baaf8677021729, type: 3}
   restartSceneName: Round2
   menuScene: {fileID: 102900000, guid: 3240b98340f018a4d97401f5b4b741b2, type: 3}
-  menuSceneName: Theatre
+  menuSceneName: StageTwo
 --- !u!4 &621636866
 Transform:
   m_ObjectHideFlags: 0

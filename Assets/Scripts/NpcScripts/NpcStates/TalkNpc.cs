@@ -7,8 +7,10 @@ public class TalkNpc : MonoBehaviour
 {
     private Rigidbody2D _body;
 
-    public DialogueSoScript dialogueSO;
     public TMP_Text dialoguePrompt;
+
+    public DialogueSoScript currentConversation;
+    public List<DialogueSoScript> conversations;
 
     private void Awake()
     {
@@ -36,14 +38,28 @@ public class TalkNpc : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            // Debug.Log("pressed");
+            //Debug.Log("pressed");
             if (DialogueManager.Instance.isDialogueActive)
             {
                 DialogueManager.Instance.AdvanceDialogue();
             }
             else
             {
-                DialogueManager.Instance.StartDialogue(dialogueSO);
+                CheckForNewConversation();
+                DialogueManager.Instance.StartDialogue(currentConversation);
+            }
+        }
+    }
+
+    private void CheckForNewConversation()
+    {
+        for (int i = 0; 1 < conversations.Count; i++)
+        {
+            var convo = conversations[i];
+            if (convo != null && convo.IsConditionMet())
+            {
+                conversations.RemoveAt(i);
+                currentConversation = convo;
             }
         }
     }

@@ -58,6 +58,8 @@ public class DialogueManager : MonoBehaviour
     {
         DialogueLine line = _currentDialogue.dialogueLines[_dialogueIndex];
 
+        DialogueHistoryTracker.Instance.RecordNpcDialogue(line.speaker);
+
         actorName.text = line.speaker.actorName; //speaker
         dialogueText.text = line.text;
         dialogueCanvas.enabled = true;
