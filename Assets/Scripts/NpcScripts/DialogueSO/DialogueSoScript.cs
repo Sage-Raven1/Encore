@@ -16,7 +16,7 @@ public class DialogueSoScript : ScriptableObject
 
     public bool IsConditionMet()
     {
-        if (requiredNpcs.Length > 0);
+        if (requiredNpcs.Length > 0)
         {
             foreach (var npc in requiredNpcs)
             {

@@ -84,14 +84,8 @@ EditorBuildSettings:
     path: Assets/Scenes/Part5/BigCity.unity
     guid: 6a2ca71d880d70548938ddd2c2b768c6
   - enabled: 1
-    path: Assets/Scenes/Part5/Cave.unity
-    guid: 3cf7a8560d7e7c6449c9b3043651e738
-  - enabled: 1
     path: Assets/Scenes/Part5/Forest.unity
     guid: 45025782f8691f9449fae8a25c0f6074
-  - enabled: 1
-    path: Assets/Scenes/Part5/FifthTheatre.unity
-    guid: 2d04027dd0c3c9b47a7c5ae1c09e8cd8
   - enabled: 1
     path: Assets/Scenes/Part5/Round5.unity
     guid: 8e3fbf96f83844d4b9cc42788a2e37a7
