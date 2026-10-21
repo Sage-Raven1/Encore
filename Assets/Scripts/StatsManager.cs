@@ -7,8 +7,10 @@ public class StatsManager : MonoBehaviour
     public static StatsManager Instance;
 
     [Header("Player Stats")]
-    public float moveSpeed = 5;
+    public float moveSpeed = 7;
     public string[] playerInventory;
+    public string currentScene;
+    public bool[] completion;
 
     private void Awake()
     {
