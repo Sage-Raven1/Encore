@@ -12,11 +12,13 @@ public class SceneChanger : MonoBehaviour
     public Vector2 newPlayerLocation;
 
     private Transform _player;
+    private StatsManager statsManager;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
+            statsManager = GetComponent<StatsManager>();
             _player = collision.transform;
             //fadeOut.Play("make an animation first ;-;");
             StartCoroutine(LoadScene());
@@ -27,6 +29,7 @@ public class SceneChanger : MonoBehaviour
     {
         yield return new WaitForSeconds(fadeTime);
         SceneManager.LoadScene(sceneToLoad);
+        statsManager.currentScene = sceneToLoad;
         _player.position = newPlayerLocation;
     }
 

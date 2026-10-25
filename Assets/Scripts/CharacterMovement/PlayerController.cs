@@ -16,8 +16,9 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D body;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+    private StatsManager statsManager; // line Anjun added, make sure you open VS from the sln file to have syntax highlight.
 
-    public float moveSpeed = 5f;
+    private float mSpeed;
 
     void Awake()
     {
@@ -25,13 +26,16 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         controls = new CharacterInput();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        statsManager = GetComponent<StatsManager>(); // line Anjun added
+
+        mSpeed = statsManager.moveSpeed;
     }
 
     private void FixedUpdate()
     {
         move = controls.Player.Movement.ReadValue<Vector2>();
         move.Normalize();
-        body.velocity = new Vector2(move.x * moveSpeed, move.y * moveSpeed);
+        body.velocity = new Vector2(move.x * mSpeed, move.y * mSpeed);
 
         moveAngle = PlayerAngle(move);
         PlayerAnimSwitch(moveAngle);

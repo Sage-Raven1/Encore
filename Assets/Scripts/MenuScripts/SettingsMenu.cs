@@ -1,5 +1,7 @@
+using System.Reflection;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -8,6 +10,10 @@ using UnityEngine.UI;
 public class SettingsMenu : MonoBehaviour
 {
     public GameObject settingsPanel;
+    public GameObject gameplayTab;
+    public GameObject displayTab;
+    public GameObject audioTab;
+    public GameObject saveFileTab;
     public GameObject[] hideWhileOpen;
 
     
@@ -29,6 +35,13 @@ public class SettingsMenu : MonoBehaviour
     // buttons (specifically in the settings panel)
     public Button resetButton;
     public Button saveButton;
+    public Button saveCloseButton;
+    public Button discardButton;
+    public Button gameplayButton;
+    public Button displayButton;
+    public Button audioButton;
+    public Button saveFileButton;
+
 
     // pendings settings (changeable)
     float pendingScroll;
@@ -63,6 +76,11 @@ public class SettingsMenu : MonoBehaviour
 
         if (resetButton != null) resetButton.onClick.AddListener(ResetToDefaults);
         if (saveButton != null) saveButton.onClick.AddListener(SaveAndClose);
+        if (saveCloseButton != null) saveCloseButton.onClick.AddListener(SaveAndClose);
+        if (gameplayButton != null) gameplayButton.onClick.AddListener(SettingsTab(gameplayTab));
+        if (displayButton != null) displayButton.onClick.AddListener(SettingsTab(displayTab));
+        if (audioButton != null) audioButton.onClick.AddListener(SettingsTab(audioTab));
+        if (saveFileButton != null) saveFileButton.onClick.AddListener(SettingsTab(saveFileTab));
 
         if (settingsPanel != null) settingsPanel.SetActive(false);
     }
@@ -87,6 +105,12 @@ public class SettingsMenu : MonoBehaviour
             pendingKeys[i] = GameSettings.LaneKeys[i];
 
         listeningLane = -1;
+
+        if (gameplayTab != null) gameplayTab.SetActive(true);
+        if (displayTab != null) displayTab.SetActive(false);
+        if (audioTab != null) audioTab.SetActive(false);
+        if (saveFileTab != null) saveFileTab.SetActive(false);
+
         RefreshUI();
 
         foreach (GameObject obj in hideWhileOpen)
@@ -134,7 +158,20 @@ public class SettingsMenu : MonoBehaviour
         if (kb.escapeKey.wasPressedThisFrame)
             Close();
     }
-    
+
+    void SettingsTab(GameObject tab)
+    {
+        if (tab != null)
+        {
+            if (gameplayTab != null) gameplayTab.SetActive(false);
+            if (displayTab != null) displayTab.SetActive(false);
+            if (audioTab != null) audioTab.SetActive(false);
+            if (saveFileTab != null) saveFileTab.SetActive(false);
+
+            tab.SetActive(true);
+        }
+    }
+
     // rebind 
     void StartRebind(int lane)
     {

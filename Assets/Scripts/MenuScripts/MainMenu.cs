@@ -22,7 +22,7 @@ public class MainMenu : MonoBehaviour
         LoadScene(storySceneName, "Story");
     }
 
-    // same thing with story
+    // same thing as with story
     public void StartFreeplay()
     {
         LoadScene(freeplaySceneName, "Freeplay");
