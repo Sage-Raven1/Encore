@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    // setting up base values
     public NoteSpawner spawner;
     public bool StartPlaying;
 
@@ -29,7 +28,7 @@ public class GameManager : MonoBehaviour
     public int multiplierTracker;
     public int[] multiplierThreshold;
 
-    // UI Text
+    [Header("UI Text")]
     public TMP_Text accuracyText;
     public TMP_Text multiText;
     public TMP_Text comboText;
@@ -45,22 +44,22 @@ public class GameManager : MonoBehaviour
     public GameObject pausePanel;
     public bool isPaused;
 
-    // resume countdown
+    [Header("Resume Countdown")]
     public float resumeDelay = 3f;
     public TMP_Text countdownText;
     bool isResuming;
 
-    //chart info
+    [Header("Chart Info")]
     public string songName;
     public string difficulty;
 
-    // results info
+    [Header("Results")]
 #if UNITY_EDITOR
     public UnityEditor.SceneAsset resultsScene;
 #endif
     [SerializeField] string resultsSceneName = "Ranking Display";
 
-    // after results (dependant on which round/ scene)
+    [Header("After Results")]
 #if UNITY_EDITOR
     public UnityEditor.SceneAsset afterResultsContinue;
     public UnityEditor.SceneAsset afterResultsRetry;
@@ -68,13 +67,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] string afterResultsContinueName;
     [SerializeField] string afterResultsRetryName;
 
-    // restart scene
+    [Header("Restart")]
 #if UNITY_EDITOR
     public UnityEditor.SceneAsset restartScene;
 #endif
     [SerializeField] string restartSceneName;
 
-    // Quit To Menu
+    [Header("Quit To Menu")]
 #if UNITY_EDITOR
     public UnityEditor.SceneAsset menuScene;
 #endif
@@ -215,7 +214,7 @@ public class GameManager : MonoBehaviour
                      perfectHits + "," + greatHits + "," + goodHits + "," +
                      missHits + "," + longestCombo + "," + result + "," +
                      SceneManager.GetActiveScene().name + "," +
-                     CleanField(GetSongName()) + "," + CleanField(difficulty) + "\n";
+                     CleanField(GetSongName()) + "," + CleanField(GetDifficulty()) + "\n";
         try
         {
             if (!File.Exists(path))
@@ -231,9 +230,16 @@ public class GameManager : MonoBehaviour
 
     string GetSongName()
     {
+        if (GameSession.HasFreeplaySong) return GameSession.SelectedSong.title;
         if (!string.IsNullOrEmpty(songName)) return songName;
         if (spawner != null && spawner.chartCSV != null) return spawner.chartCSV.name;
         return SceneManager.GetActiveScene().name;
+    }
+
+    string GetDifficulty()
+    {
+        if (GameSession.HasFreeplaySong) return GameSession.SelectedChart.name;
+        return difficulty;
     }
 
     string CleanField(string value)
