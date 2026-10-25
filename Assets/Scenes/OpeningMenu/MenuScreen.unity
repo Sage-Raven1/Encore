@@ -854,9 +854,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5f3a02e78fb74e41b8eba9e6bb8c4dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  storyScene: {fileID: 0}
   storySceneName: 
-  freeplaySceneName: 
-  SettingsPanel: {fileID: 0}
+  freeplayScene: {fileID: 102900000, guid: 8a17ad557c28f42468ab9b62968f3496, type: 3}
+  freeplaySceneName: Freeplay
+  settingsMenu: {fileID: 1978186131}
+  settingsPanel: {fileID: 2073267391}
 --- !u!4 &271486252
 Transform:
   m_ObjectHideFlags: 0
@@ -4290,13 +4293,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 271486250}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 271486251}
+        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+        m_MethodName: OpenSettings
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -4424,9 +4427,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 102900000, guid: da75db3b1c8b61c4486ed7907f0e2273, type: 3}
-        m_TargetAssemblyTypeName: UnityEngine.Object, UnityEngine
-        m_MethodName: 
+      - m_Target: {fileID: 271486251}
+        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+        m_MethodName: StartStory
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4864,7 +4867,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1284146908}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 271486251}
+        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+        m_MethodName: QuitGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1284146908
 MonoBehaviour:
   m_ObjectHideFlags: 0
