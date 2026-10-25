@@ -1,77 +1,57 @@
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static System.Net.Mime.MediaTypeNames;
 using Debug = UnityEngine.Debug;
-using Application = UnityEngine.Application;
 
 public class MainMenu : MonoBehaviour
 {
-    [Header("Story Mode")]
-#if UNITY_EDITOR
-    public UnityEditor.SceneAsset storyScene;
-#endif
-    [SerializeField] string storySceneName;
+    [SerializeField] private string storySceneName;
+    [SerializeField] private string freeplaySceneName;
+    public GameObject SettingsPanel;
 
-    [Header("Freeplay")]
-#if UNITY_EDITOR
-    public UnityEditor.SceneAsset freeplayScene;
-#endif
-    [SerializeField] string freeplaySceneName;
-
-    [Header("Settings")]
-    public SettingsMenu settingsMenu;
-    public GameObject settingsPanel;
-
-#if UNITY_EDITOR
-    void OnValidate()
-    {
-        storySceneName = storyScene != null ? storyScene.name : "";
-        freeplaySceneName = freeplayScene != null ? freeplayScene.name : "";
-    }
-#endif
 
     void Start()
     {
-        Time.timeScale = 1f;
-        if (settingsMenu == null && settingsPanel != null) settingsPanel.SetActive(false);
+        if (SettingsPanel != null) SettingsPanel.SetActive(false);
+    }
+
+    // start story function -> need to attatch to the story button
+    public void StartStory()
+    {
+        LoadScene(storySceneName, "Story");
+    }
+
+    // same thing with story
+    public void StartFreeplay()
+    {
+        LoadScene(freeplaySceneName, "Freeplay");
     }
 
     public void OpenSettings()
     {
-        if (settingsMenu != null)
-            settingsMenu.Open();
-        else if (settingsPanel != null)
-            settingsPanel.SetActive(true);
-    }
+        if (SettingsPanel != null) SettingsPanel.SetActive(true);
 
-    public void StartStory()
-    {
-        GameSession.Mode = GameMode.Story;
-        GameSession.SelectedSong = null;
-        LoadScene(storySceneName, "Story");
-    }
-
-    public void StartFreeplay()
-    {
-        GameSession.Mode = GameMode.Freeplay;
-        LoadScene(freeplaySceneName, "Freeplay");
     }
 
     public void QuitGame()
     {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
+    #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false; 
+    #else
+            UnityEngine.Application.Quit();
+    #endif
     }
 
-    void LoadScene(string sceneName, string label)
+   
+    public void LoadScene(string sceneName, string label)
     {
         if (string.IsNullOrEmpty(sceneName))
         {
             Debug.LogWarning("MainMenu: No " + label + " scene assigned.");
             return;
         }
+
         Time.timeScale = 1f;
         SceneManager.LoadScene(sceneName);
     }

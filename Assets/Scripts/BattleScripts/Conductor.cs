@@ -18,8 +18,6 @@ public class Conductor : MonoBehaviour
     void Awake()
     {
         instance = this;
-        if (GameSession.HasFreeplaySong && song != null && GameSession.SelectedSong.audio != null)
-            song.clip = GameSession.SelectedSong.audio;
         scrollSpeed = GameSettings.ScrollSpeed;
         if (song != null) song.volume = GameSettings.MusicVolume;
         SongTime = -GameSettings.AudioOffset / 1000f;

@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Globalization;
+
+// Force Unity's Debug even if an IDE auto-adds System.Diagnostics
 using Debug = UnityEngine.Debug;
 
 public class NoteSpawner : MonoBehaviour
@@ -10,21 +12,20 @@ public class NoteSpawner : MonoBehaviour
     public TextAsset chartCSV;
     public List<NoteData> chartNotes = new List<NoteData>();
 
+    // Spawn settings
     public float[] laneXPositions = new float[] { -1.52f, -0.52f, 0.52f, 1.52f };
     public float spawnY = 6f;
     public float hitLineY = -3.4f;
 
-    int nextNoteIndex = 0;
+    int nextNoteIndex = 0;   // chart is sorted, so we only need to look at the next note
 
     void Awake()
     {
-        if (GameSession.HasFreeplaySong && GameSession.SelectedChart.chart != null)
-            chartCSV = GameSession.SelectedChart.chart;
-
+        // Load in Awake so GameManager.Start can read chartNotes.Count
         if (chartCSV != null)
             LoadChartFromCSV(chartCSV);
         else
-            Debug.LogWarning("NoteSpawner: No chart CSV assigned!");
+            Debug.LogWarning("NoteSpawner: No chart CSV assigned! Drag a CSV file into the chartCSV field.");
     }
 
     void Start()
@@ -35,12 +36,14 @@ public class NoteSpawner : MonoBehaviour
 
     void Update()
     {
+        // Don't spawn notes while paused
         if (GameManager.instance != null && GameManager.instance.isPaused)
             return;
 
         if (conductor == null || chartNotes == null || chartNotes.Count == 0)
             return;
 
+        // Spawn each note just as it would enter the screen at the top
         float spawnAhead = conductor.TravelTime;
         float currentTime = conductor.SongTime;
 
@@ -95,6 +98,7 @@ public class NoteSpawner : MonoBehaviour
         nextNoteIndex = 0;
         string[] lines = csvFile.text.Split('\n');
 
+        // Skip header line if it exists
         int startLine = (lines.Length > 0 && lines[0].Contains("time")) ? 1 : 0;
 
         for (int i = startLine; i < lines.Length; i++)
