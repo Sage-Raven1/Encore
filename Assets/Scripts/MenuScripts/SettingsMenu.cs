@@ -77,10 +77,10 @@ public class SettingsMenu : MonoBehaviour
         if (resetButton != null) resetButton.onClick.AddListener(ResetToDefaults);
         if (saveButton != null) saveButton.onClick.AddListener(SaveAndClose);
         if (saveCloseButton != null) saveCloseButton.onClick.AddListener(SaveAndClose);
-        if (gameplayButton != null) gameplayButton.onClick.AddListener(SettingsTab(gameplayTab));
-        if (displayButton != null) displayButton.onClick.AddListener(SettingsTab(displayTab));
-        if (audioButton != null) audioButton.onClick.AddListener(SettingsTab(audioTab));
-        if (saveFileButton != null) saveFileButton.onClick.AddListener(SettingsTab(saveFileTab));
+        if (gameplayButton != null) gameplayButton.onClick.AddListener(() => SettingsTab(gameplayTab));
+        if (displayButton != null) displayButton.onClick.AddListener(() => SettingsTab(displayTab));
+        if (audioButton != null) audioButton.onClick.AddListener( () => SettingsTab(audioTab));
+        if (saveFileButton != null) saveFileButton.onClick.AddListener(() => SettingsTab(saveFileTab));
 
         if (settingsPanel != null) settingsPanel.SetActive(false);
     }
@@ -171,6 +171,17 @@ public class SettingsMenu : MonoBehaviour
             tab.SetActive(true);
         }
     }
+/*
+    void GameplayTab() { if (gameplayTab != null) gameplayTab.SetActive(true); }
+    void DisplayTab() { if (gameplayTab != null) gameplayTab.SetActive(true); }
+    void AudioTab() { if (gameplayTab != null) gameplayTab.SetActive(true); }
+    void SaveFileTab() { if (gameplayTab != null) gameplayTab.SetActive(false); }
+
+    void TurnOffOtherSettingTabs()
+    {
+        if (gameplayTab != null) gameplayTab.SetActive(false);
+
+    } */
 
     // rebind 
     void StartRebind(int lane)
