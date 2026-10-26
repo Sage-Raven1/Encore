@@ -104,6 +104,8 @@ public class GameManager : MonoBehaviour
         Currentmultiplier = 1;
         RefreshUI();
         TotalNotes = spawner != null ? spawner.chartNotes.Count : 0;
+        if (countdownText != null) countdownText.gameObject.SetActive(false);
+        if (pausePanel != null) pausePanel.SetActive(false);
     }
 
     void Update()

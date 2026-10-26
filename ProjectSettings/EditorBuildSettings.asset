@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Scenes/OpeningMenu/MenuScreen.unity
     guid: a6f4bd826a5e4d24c89cc57c6b714abe
   - enabled: 1
+    path: Assets/Scenes/Freeplay/Freeplay.unity
+    guid: 8a17ad557c28f42468ab9b62968f3496
+  - enabled: 1
     path: Assets/Scenes/OpeningMenu/ResultsDisplay.unity
     guid: a2cc1a14b25443e4697b25b555d108bf
   - enabled: 1
@@ -95,4 +98,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Part5/YellowRoad4.unity
     guid: 9d161ac31dcd4cd4ab9867a3430fac46
+  - enabled: 1
+    path: Assets/Scenes/Freeplay/FreeplayGame.unity
+    guid: aac902064d70b8449b2ca079787ef528
   m_configObjects: {}
