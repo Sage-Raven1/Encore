@@ -22,6 +22,7 @@ public class SceneChanger : MonoBehaviour
             _player = collision.transform;
             //fadeOut.Play("make an animation first ;-;");
             StartCoroutine(LoadScene());
+            statsManager.SavePlayer();
         }
     }
 

@@ -5,6 +5,8 @@ using Debug = UnityEngine.Debug;
 public class MainMenu : MonoBehaviour
 {
     public GameObject SettingsPanel;
+    public bool continuePlay;
+    private StatsManager statsManager;
 
     [Header("Button Scenes")]
 #if UNITY_EDITOR
@@ -29,9 +31,19 @@ public class MainMenu : MonoBehaviour
 
     public void StartStory()
     {
-        GameSession.Mode = GameMode.Story;
-        GameSession.SelectedSong = null;
-        LoadScene(storySceneName, "Story");
+        continuePlay = SaveSystem.CheckSaveFile();
+        if(continuePlay)
+        {
+            GameSession.Mode = GameMode.Story;
+            GameSession.SelectedSong = null;
+            statsManager.LoadPlayer();
+        }   
+        else
+        {
+            GameSession.Mode = GameMode.Story;
+            GameSession.SelectedSong = null;
+            LoadScene(storySceneName, "Story");
+        }
     }
 
     public void StartFreeplay()

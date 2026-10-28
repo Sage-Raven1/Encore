@@ -4,9 +4,21 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public static class SaveSystem
 {
+    public static bool CheckSaveFile()
+    {
+        string path = Application.persistentDataPath + "/player.savefile";
+        if (File.Exists(path))
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
+    }
 
     public static void SavePlayer(StatsManager player)
     {
+        if(!CheckSaveFile()) { }
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/player.savefile";
         FileStream stream = new FileStream(path, FileMode.Create);
