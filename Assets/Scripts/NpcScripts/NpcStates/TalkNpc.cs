@@ -25,12 +25,14 @@ public class TalkNpc : MonoBehaviour
     private void OnEnable()
     {
         dialoguePrompt.enabled = true;
+        _body.velocity = Vector2.zero;
         _body.bodyType = RigidbodyType2D.Kinematic;
     }
 
     private void OnDisable()
     {
         dialoguePrompt.enabled = false;
+        _body.velocity = Vector2.zero;
         _body.bodyType = RigidbodyType2D.Dynamic;
     }
 
@@ -53,7 +55,7 @@ public class TalkNpc : MonoBehaviour
 
     private void CheckForNewConversation()
     {
-        for (int i = 0; 1 < conversations.Count; i++)
+        for (int i = 0; i < conversations.Count; i++)
         {
             var convo = conversations[i];
             if (convo != null && convo.IsConditionMet())

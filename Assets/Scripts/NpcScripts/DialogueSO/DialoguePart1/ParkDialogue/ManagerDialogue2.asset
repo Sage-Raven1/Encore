@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueLines:
   - speaker: {fileID: 11400000, guid: 914e1dba4a0bb0e4fa9172311b0e912f, type: 2}
-    text: You met my daughter?! I'm so sorry.
+    text: Follow this road left and just keep going.
+  - speaker: {fileID: 11400000, guid: 914e1dba4a0bb0e4fa9172311b0e912f, type: 2}
+    text: Good luck!
   dialogueOptions: []
   requiredNpcs:
-  - {fileID: 11400000, guid: 10d9471cf6d23c84dab9550d29fedf85, type: 2}
+  - {fileID: 11400000, guid: 914e1dba4a0bb0e4fa9172311b0e912f, type: 2}

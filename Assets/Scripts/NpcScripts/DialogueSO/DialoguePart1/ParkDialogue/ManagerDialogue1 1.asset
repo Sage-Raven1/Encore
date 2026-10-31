@@ -15,5 +15,15 @@ MonoBehaviour:
   dialogueLines:
   - speaker: {fileID: 11400000, guid: 914e1dba4a0bb0e4fa9172311b0e912f, type: 2}
     text: Congrats of your win, Ebi!
+  - speaker: {fileID: 11400000, guid: 914e1dba4a0bb0e4fa9172311b0e912f, type: 2}
+    text: Your uncle would be proud.
+  - speaker: {fileID: 11400000, guid: 914e1dba4a0bb0e4fa9172311b0e912f, type: 2}
+    text: ...Your brother too.
+  - speaker: {fileID: 11400000, guid: 914e1dba4a0bb0e4fa9172311b0e912f, type: 2}
+    text: Anyways, your next round is in Beach City. Remember how to get there?
+  - speaker: {fileID: 11400000, guid: 914e1dba4a0bb0e4fa9172311b0e912f, type: 2}
+    text: Follow this road left and just keep going.
+  - speaker: {fileID: 11400000, guid: 914e1dba4a0bb0e4fa9172311b0e912f, type: 2}
+    text: Good luck!
   dialogueOptions: []
   requiredNpcs: []

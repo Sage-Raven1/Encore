@@ -18,6 +18,8 @@ public class DialogueManager : MonoBehaviour
     private DialogueSoScript _currentDialogue;
     private int _dialogueIndex;
 
+    private float _saveMoveSpeed;
+
     private void Awake()
     {
         if (Instance == null)
@@ -51,11 +53,14 @@ public class DialogueManager : MonoBehaviour
         else
         {
             EndDialogue();
+            StatsManager.Instance.moveSpeed = _saveMoveSpeed;
         }
     }
 
     public void ShowDialogue()
     {
+        _saveMoveSpeed = StatsManager.Instance.moveSpeed;
+
         DialogueLine line = _currentDialogue.dialogueLines[_dialogueIndex];
 
         DialogueHistoryTracker.Instance.RecordNpcDialogue(line.speaker);
@@ -63,6 +68,8 @@ public class DialogueManager : MonoBehaviour
         actorName.text = line.speaker.actorName; //speaker
         dialogueText.text = line.text;
         dialogueCanvas.enabled = true;
+
+        StatsManager.Instance.moveSpeed = 0;
 
         _dialogueIndex++;
     }
@@ -73,5 +80,6 @@ public class DialogueManager : MonoBehaviour
         isDialogueActive = false;
         dialogueCanvas.enabled = false;
         dialoguePrompt.enabled = true;
+        StatsManager.Instance.moveSpeed = _saveMoveSpeed;
     }
 }

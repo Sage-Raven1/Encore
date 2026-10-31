@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class SceneChanger : MonoBehaviour
 {
     public string sceneToLoad;
-    //public Animator fadeOut;
+    public Animator fadeOut;
     public float fadeTime = 5f;
     public Vector2 newPlayerLocation;
 
@@ -20,7 +20,7 @@ public class SceneChanger : MonoBehaviour
         {
             statsManager = GetComponent<StatsManager>();
             _player = collision.transform;
-            //fadeOut.Play("make an animation first ;-;");
+            fadeOut.Play("FadeAnimation");
             StartCoroutine(LoadScene());
             statsManager.SavePlayer();
         }

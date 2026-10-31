@@ -9,7 +9,7 @@ public class StatsManager : MonoBehaviour
     public static StatsManager Instance;
 
     [Header("Player Stats")]
-    public float moveSpeed = 7;
+    public float moveSpeed = 5;
     public string[] playerInventory;
     public string currentScene;
     public int[] completion;
