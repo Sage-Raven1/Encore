@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -20,9 +21,9 @@ public class SceneChanger : MonoBehaviour
         {
             statsManager = GetComponent<StatsManager>();
             _player = collision.transform;
-            //fadeOut.Play("FadeAnimation");
             statsManager.SavePlayer();
             Debug.Log("Player Saved");
+            fadeOut.Play("FadeToBlack");
             StartCoroutine(LoadScene());
         }
     }
@@ -30,8 +31,8 @@ public class SceneChanger : MonoBehaviour
     IEnumerator LoadScene()
     {
         yield return new WaitForSeconds(fadeTime);
+
         SceneManager.LoadScene(sceneToLoad);
-        statsManager.currentScene = sceneToLoad;
         _player.position = newPlayerLocation;
     }
 

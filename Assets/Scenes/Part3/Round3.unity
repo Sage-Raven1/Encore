@@ -883,9 +883,9 @@ MonoBehaviour:
   difficulty: Easy
   resultsScene: {fileID: 102900000, guid: a2cc1a14b25443e4697b25b555d108bf, type: 3}
   resultsSceneName: ResultsDisplay
-  afterResultsContinue: {fileID: 102900000, guid: 0b798fe8ca9a0734d945d2d64e7ffd63, type: 3}
+  afterResultsContinue: {fileID: 102900000, guid: 28bac61ddc8455e4a8a85062d7b598df, type: 3}
   afterResultsRetry: {fileID: 0}
-  afterResultsContinueName: Round3
+  afterResultsContinueName: StageThree
   afterResultsRetryName: 
   restartScene: {fileID: 102900000, guid: b17e0b2b90656864e875fadc5eba8ec7, type: 3}
   restartSceneName: Round1

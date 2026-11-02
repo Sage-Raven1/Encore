@@ -28,14 +28,14 @@ public class PlayerController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         statsManager = GetComponent<StatsManager>(); // line Anjun added
 
-        mSpeed = statsManager.moveSpeed;
+        //mSpeed = statsManager.moveSpeed; saving movespeed in a var locks movespeed and can't be changed by other scripts. So we will use statsManager.moveSpeed directly in FixedUpdate
     }
 
     private void FixedUpdate()
     {
         move = controls.Player.Movement.ReadValue<Vector2>();
         move.Normalize();
-        body.velocity = new Vector2(move.x * mSpeed, move.y * mSpeed);
+        body.velocity = new Vector2(move.x * statsManager.moveSpeed, move.y * statsManager.moveSpeed);
 
         moveAngle = PlayerAngle(move);
         PlayerAnimSwitch(moveAngle);
