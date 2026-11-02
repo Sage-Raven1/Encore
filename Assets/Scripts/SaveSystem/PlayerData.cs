@@ -6,19 +6,15 @@ using UnityEngine;
 public class PlayerData
 {
     public string scene;
-    public float[] position;
     public int[] completion;
     public float score;
 
-    private PlayerController playerController;
+    //private PlayerController playerController;
 
     public PlayerData (StatsManager player)
     {
 
         scene = player.currentScene;
-
-        position[0] = player.transform.position.x;
-        position[1] = player.transform.position.y;
 
         for (int i = 0; i < player.completion.Length; i++)
         {

@@ -23,9 +23,8 @@ public class SceneChanger : MonoBehaviour
             //Debug.Log("Player entered scene changer");
 
             statsManager = collision.GetComponent<StatsManager>();
+            UnityEngine.Debug.Log(statsManager.currentScene);
             _player = collision.transform;
-            statsManager.SavePlayer();
-            UnityEngine.Debug.Log("Player Saved");
             fadeOut.Play("FadeToBlack");
             StartCoroutine(LoadScene());
         }
@@ -34,15 +33,7 @@ public class SceneChanger : MonoBehaviour
     IEnumerator LoadScene()
     {
         yield return new WaitForSeconds(fadeTime);
-
-
-        if (mainMenu.continuePlay)
-        {
-            mainMenu.continuePlay = false;
-            statsManager.LoadPlayer();
-            sceneToLoad = statsManager.currentScene;
-        }
-
+        statsManager.currentScene = sceneToLoad;
         SceneManager.LoadScene(sceneToLoad);
         _player.position = newPlayerLocation;
     }

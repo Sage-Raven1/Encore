@@ -27,14 +27,31 @@ public class MainMenu : MonoBehaviour
     void Start()
     {
         if (SettingsPanel != null) SettingsPanel.SetActive(false);
+        statsManager = GetComponent<StatsManager>();
     }
 
     public void StartStory()
     {
         continuePlay = SaveSystem.CheckSaveFile();
-        GameSession.Mode = GameMode.Story;
-        GameSession.SelectedSong = null;
-        LoadScene(storySceneName, "Story");
+
+        if (continuePlay)
+        {
+            continuePlay = false;
+            //statsManager.LoadPlayer();
+            string sceneToLoad = statsManager.currentScene;
+            Debug.Log(statsManager.currentScene);
+            Debug.Log(sceneToLoad);
+            GameSession.Mode = GameMode.Story;
+            GameSession.SelectedSong = null;
+            LoadScene(sceneToLoad, "Continue Story");
+        }
+        else
+        {
+            statsManager.currentScene = "Backstage";
+            GameSession.Mode = GameMode.Story;
+            GameSession.SelectedSong = null;
+            LoadScene(storySceneName, "Story");
+        }
     }
 
     public void StartFreeplay()

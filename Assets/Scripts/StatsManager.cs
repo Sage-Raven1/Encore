@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class StatsManager : MonoBehaviour
     [Header("Player Stats")]
     public float moveSpeed = 5;
     public string[] playerInventory;
-    public string currentScene;
+    public string currentScene = "MenuScreen";
     public int[] completion;
     public float score;
 
@@ -39,14 +40,10 @@ public class StatsManager : MonoBehaviour
 
         currentScene = data.scene;
         score = data.score;
-        
-        Vector2 position;
-        position.x = data.position[0];
-        position.y = data.position[1];
 
-        for (int i = 0; i < data.completion.Length; i++)
+        /*for (int i = 0; i < data.completion.Length; i++)
         {
             completion[i] = data.completion[i];
-        }
+        }*/
     }
 }

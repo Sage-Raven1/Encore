@@ -7,20 +7,34 @@ public static class SaveSystem
     public static bool CheckSaveFile()
     {
         string path = Application.persistentDataPath + "/Save/player.savefile";
+        {
+            string savefolder = Application.persistentDataPath + "/Save";
+            if (Directory.Exists(savefolder))
+            {
+                Debug.Log("Save folder found successfully");
+            }
+            else
+            {
+                Debug.Log("Save folder not found");
+                Debug.Log("creating folder...");
+                Directory.CreateDirectory(Application.persistentDataPath + "/Save");
+            }
+        }
         if (File.Exists(path))
         {
             Debug.Log("Savefile exists");
             return true;
         } else
         {
-            Debug.Log("Savefile exists");
+            Debug.Log("Savefile does not exist");
+            Debug.Log("creating Savefile...");
+            File.Create(path).Close();
             return false;
         }
     }
 
     public static void SavePlayer(StatsManager player)
     {
-        if(!CheckSaveFile()) { }
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/Save/player.savefile";
         FileStream stream = new FileStream(path, FileMode.Create);
