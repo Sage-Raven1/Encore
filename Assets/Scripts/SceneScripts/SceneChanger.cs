@@ -20,6 +20,8 @@ public class SceneChanger : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            //Debug.Log("Player entered scene changer");
+
             statsManager = collision.GetComponent<StatsManager>();
             _player = collision.transform;
             statsManager.SavePlayer();
