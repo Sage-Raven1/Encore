@@ -20,7 +20,7 @@ public class SceneChanger : MonoBehaviour
         {
             statsManager = GetComponent<StatsManager>();
             _player = collision.transform;
-            fadeOut.Play("FadeAnimation");
+            fadeOut.Play("FadeToBlack");
             StartCoroutine(LoadScene());
             statsManager.SavePlayer();
         }
@@ -29,8 +29,8 @@ public class SceneChanger : MonoBehaviour
     IEnumerator LoadScene()
     {
         yield return new WaitForSeconds(fadeTime);
+
         SceneManager.LoadScene(sceneToLoad);
-        statsManager.currentScene = sceneToLoad;
         _player.position = newPlayerLocation;
     }
 
