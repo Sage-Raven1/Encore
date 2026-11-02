@@ -14,15 +14,16 @@ public class SceneChanger : MonoBehaviour
 
     private Transform _player;
     private StatsManager statsManager;
+    private MainMenu mainMenu;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            statsManager = GetComponent<StatsManager>();
+            statsManager = collision.GetComponent<StatsManager>();
             _player = collision.transform;
             statsManager.SavePlayer();
-            Debug.Log("Player Saved");
+            UnityEngine.Debug.Log("Player Saved");
             fadeOut.Play("FadeToBlack");
             StartCoroutine(LoadScene());
         }
@@ -31,6 +32,14 @@ public class SceneChanger : MonoBehaviour
     IEnumerator LoadScene()
     {
         yield return new WaitForSeconds(fadeTime);
+
+
+        if (mainMenu.continuePlay)
+        {
+            mainMenu.continuePlay = false;
+            statsManager.LoadPlayer();
+            sceneToLoad = statsManager.currentScene;
+        }
 
         SceneManager.LoadScene(sceneToLoad);
         _player.position = newPlayerLocation;

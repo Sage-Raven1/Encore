@@ -32,22 +32,9 @@ public class MainMenu : MonoBehaviour
     public void StartStory()
     {
         continuePlay = SaveSystem.CheckSaveFile();
-        if(continuePlay)
-        {
-            GameSession.Mode = GameMode.Story;
-            GameSession.SelectedSong = null;
-            statsManager.LoadPlayer();
-            string currentScene = statsManager.currentScene;
-            Debug.Log("current scene = " + currentScene);
-            LoadScene(currentScene, "Story");
-        }   
-        else
-        {
-            Debug.Log("New game");
-            GameSession.Mode = GameMode.Story;
-            GameSession.SelectedSong = null;
-            LoadScene(storySceneName, "Story");
-        }
+        GameSession.Mode = GameMode.Story;
+        GameSession.SelectedSong = null;
+        LoadScene(storySceneName, "Story");
     }
 
     public void StartFreeplay()
