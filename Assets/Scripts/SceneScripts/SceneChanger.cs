@@ -20,9 +20,10 @@ public class SceneChanger : MonoBehaviour
         {
             statsManager = GetComponent<StatsManager>();
             _player = collision.transform;
-            fadeOut.Play("FadeAnimation");
-            StartCoroutine(LoadScene());
+            //fadeOut.Play("FadeAnimation");
             statsManager.SavePlayer();
+            Debug.Log("Player Saved");
+            StartCoroutine(LoadScene());
         }
     }
 

@@ -6,12 +6,14 @@ public static class SaveSystem
 {
     public static bool CheckSaveFile()
     {
-        string path = Application.persistentDataPath + "/player.savefile";
+        string path = Application.persistentDataPath + "/Save/player.savefile";
         if (File.Exists(path))
         {
+            Debug.Log("Savefile exists");
             return true;
         } else
         {
+            Debug.Log("Savefile exists");
             return false;
         }
     }
@@ -20,7 +22,7 @@ public static class SaveSystem
     {
         if(!CheckSaveFile()) { }
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/player.savefile";
+        string path = Application.persistentDataPath + "/Save/player.savefile";
         FileStream stream = new FileStream(path, FileMode.Create);
 
         PlayerData data = new PlayerData(player);
@@ -31,7 +33,7 @@ public static class SaveSystem
 
     public static PlayerData LoadPlayer()
     {
-        string path = Application.persistentDataPath + "/player.savefile";
+        string path = Application.persistentDataPath + "/Save/player.savefile";
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
