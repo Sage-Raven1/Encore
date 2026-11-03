@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4220acdd7f5ec64ab067873248543d8, type: 3}
+  m_Name: Rival1Mom2
+  m_EditorClassIdentifier: 
+  dialogueLines:
+  - speaker: {fileID: 11400000, guid: 5a4cf6c60d2652f49a00eeaa0a5eaa04, type: 2}
+    text: Go, your next competition in is in Beach city
+  - speaker: {fileID: 11400000, guid: 5a4cf6c60d2652f49a00eeaa0a5eaa04, type: 2}
+    text: ..Maybe I should bury her there.
+  dialogueOptions: []
+  requiredNpcs:
+  - {fileID: 11400000, guid: 5a4cf6c60d2652f49a00eeaa0a5eaa04, type: 2}

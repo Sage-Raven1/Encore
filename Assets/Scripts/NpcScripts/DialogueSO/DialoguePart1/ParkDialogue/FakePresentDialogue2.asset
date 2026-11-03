@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4220acdd7f5ec64ab067873248543d8, type: 3}
-  m_Name: DialogueDailyMarket
+  m_Name: FakePresentDialogue2
   m_EditorClassIdentifier: 
   dialogueLines:
-  - speaker: {fileID: 11400000, guid: 5d5ec67c124a414428e9b9d1e6ae43de, type: 2}
-    text: There's a sign on the door.
-  - speaker: {fileID: 11400000, guid: 5d5ec67c124a414428e9b9d1e6ae43de, type: 2}
-    text: '"Closed for the idol festival!"'
+  - speaker: {fileID: 11400000, guid: 5d20e8b93701efd4994b103b45950732, type: 2}
+    text: Its empty, what did you expect.
+  dialogueOptions: []
+  requiredNpcs:
+  - {fileID: 11400000, guid: 5d20e8b93701efd4994b103b45950732, type: 2}

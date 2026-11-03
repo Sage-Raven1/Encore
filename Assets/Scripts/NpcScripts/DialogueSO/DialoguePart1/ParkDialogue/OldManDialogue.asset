@@ -10,8 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4220acdd7f5ec64ab067873248543d8, type: 3}
-  m_Name: DialogueWaterHouse
+  m_Name: OldManDialogue
   m_EditorClassIdentifier: 
   dialogueLines:
-  - speaker: {fileID: 11400000, guid: fbb20e64ceb748e4b8686242f9fc0a55, type: 2}
-    text: It's not on water but it leads to water.
+  - speaker: {fileID: 11400000, guid: 303fb22277d7a8e4eb39a96753b0da77, type: 2}
+    text: Bones.. Dead.. Park.. Dead!
+  dialogueOptions: []
+  requiredNpcs: []

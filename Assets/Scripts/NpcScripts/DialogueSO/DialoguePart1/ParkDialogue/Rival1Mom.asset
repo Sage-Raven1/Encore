@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4220acdd7f5ec64ab067873248543d8, type: 3}
+  m_Name: Rival1Mom
+  m_EditorClassIdentifier: 
+  dialogueLines:
+  - speaker: {fileID: 11400000, guid: 5a4cf6c60d2652f49a00eeaa0a5eaa04, type: 2}
+    text: Ebi? So you won.
+  - speaker: {fileID: 11400000, guid: 5a4cf6c60d2652f49a00eeaa0a5eaa04, type: 2}
+    text: 'Thanks for telling me. Oh don''t worry about her. '
+  - speaker: {fileID: 11400000, guid: 5a4cf6c60d2652f49a00eeaa0a5eaa04, type: 2}
+    text: Ever since your uncle left, you've been a daughter to me, and I'm just
+      glad you got to sing with..
+  - speaker: {fileID: 11400000, guid: 5a4cf6c60d2652f49a00eeaa0a5eaa04, type: 2}
+    text: Your "sister".
+  dialogueOptions: []
+  requiredNpcs: []
