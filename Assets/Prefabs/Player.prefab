@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8501405186037491316}
   - component: {fileID: 8501405186037491315}
   - component: {fileID: 8501405186037491314}
+  - component: {fileID: 3882520719331425506}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -157,4 +158,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc982e53a3cfa3447a370f1347fbad93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 6
+  moveAngle: 0
+  direction: 0
+--- !u!114 &3882520719331425506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8501405186037491313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d32ece42025dfc4b9d4727fe55434a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
+  playerInventory: []
+  currentScene: MenuScreen
+  completion: 
+  score: 0

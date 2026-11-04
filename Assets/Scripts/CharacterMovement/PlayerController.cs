@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
     {
         move = controls.Player.Movement.ReadValue<Vector2>();
         move.Normalize();
-        body.velocity = new Vector2(move.x * statsManager.moveSpeed, move.y * statsManager.moveSpeed);
+        body.velocity = new Vector2(move.x * 5, move.y * 5);
 
         moveAngle = PlayerAngle(move);
         PlayerAnimSwitch(moveAngle);
