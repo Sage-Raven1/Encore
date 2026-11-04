@@ -5,7 +5,7 @@ using UnityEngine;
 public class Loot : MonoBehaviour
 {
     public ItemSo itemSo;
-    public SpriteRenderer sr;
+    public SpriteRenderer spriteRender;
 
     public int quantity;
 
@@ -15,6 +15,16 @@ public class Loot : MonoBehaviour
         {
             return;
         }
-        sr.sprite = itemSo.icon;
+        spriteRender.sprite = itemSo.icon;
+        this.name = itemSo.itemName;
+    }
+
+    private void OnTriggerEnter2D(Collider2D Collision)
+    {
+        if (Collision.CompareTag("Player"))
+        {
+            StatsManager.Instance.playerInventory.Add(itemSo.itemName);
+            Destroy(gameObject);
+        }
     }
 }

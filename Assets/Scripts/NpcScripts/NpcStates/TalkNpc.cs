@@ -60,8 +60,21 @@ public class TalkNpc : MonoBehaviour
             var convo = conversations[i];
             if (convo != null && convo.IsConditionMet())
             {
-                conversations.RemoveAt(i);
                 currentConversation = convo;
+
+                if(convo.removeAfterPlay)
+                {
+                    conversations.RemoveAt(i);
+                }
+
+                if (convo.removeDialogueOnPlay != null && convo.removeDialogueOnPlay.Count > 0)
+                {
+                    foreach (var dialogueToRemove in convo.removeDialogueOnPlay)
+                    {
+                        conversations.Remove(dialogueToRemove);
+                    }
+                }
+                break;
             }
         }
     }

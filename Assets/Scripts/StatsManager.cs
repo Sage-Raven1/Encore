@@ -11,7 +11,7 @@ public class StatsManager : MonoBehaviour
 
     [Header("Player Stats")]
     public float moveSpeed = 5;
-    public string[] playerInventory;
+    public List<string> playerInventory = new List<string>();
     public string currentScene = "MenuScreen";
     public int[] completion;
     public float score;

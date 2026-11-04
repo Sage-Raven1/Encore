@@ -6,13 +6,14 @@ using UnityEngine;
 public class DialogueSoScript : ScriptableObject
 {
     public DialogueLine[] dialogueLines;
-    public DialogueOption[] dialogueOptions;
 
     [Header("Conditional Dialogue Requirements (Optional)")]
     public ActorSoScript[] requiredNpcs;
+    public ItemSo[] requiredItems;
 
-    //items
-    //locations
+    [Header("Control Flags")]
+    public bool removeAfterPlay;
+    public List<DialogueSoScript> removeDialogueOnPlay;
 
     public bool IsConditionMet()
     {
@@ -26,8 +27,17 @@ public class DialogueSoScript : ScriptableObject
                 }
             }
         }
-        //check for item
-        //check for locations
+        
+        if (requiredItems.Length > 0)
+        {
+            foreach (var item in requiredItems)
+            {
+                if (!StatsManager.Instance.playerInventory.Contains(item.itemName))
+                {
+                    return false;
+                }
+            }
+        }
 
         return true;
     }
