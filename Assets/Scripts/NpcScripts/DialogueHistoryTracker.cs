@@ -5,7 +5,7 @@ using UnityEngine;
 public class DialogueHistoryTracker : MonoBehaviour
 {
     public static DialogueHistoryTracker Instance;
-    private readonly List<ActorSoScript> _spokenNPCs = new List<ActorSoScript>();
+    private readonly HashSet<ActorSoScript> _spokenNPCs = new HashSet<ActorSoScript>();
 
     private void Awake(){
         if (Instance != null)

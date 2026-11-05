@@ -12,7 +12,7 @@ public class QuestLogUI : MonoBehaviour
         foreach (var objective in questSo.objectives)
         {
             questManager.UpdateObjectiveProgress(questSo, objective);
-            Debug.Log($"Objective {objective.description} - {questManager.GetProgressText(questSo, objective)}");
+            Debug.Log($"Objective {objective.description} -> {questManager.GetProgressText(questSo, objective)}");
         }
     }
 

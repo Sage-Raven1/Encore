@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
+    public static InventoryManager Instance;
+
     public Canvas inventoryCanvas;
 
     public InventorySlotScript[] itemSlots;
@@ -13,6 +16,16 @@ public class InventoryManager : MonoBehaviour
     private void Awake()
     {
         inventoryCanvas.enabled = false;
+
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void Start()
@@ -94,5 +107,30 @@ public class InventoryManager : MonoBehaviour
     {
         Loot loot = Instantiate(lootPrefab, player.position, Quaternion.identity).GetComponent<Loot>();
         loot.Initialize(itemSo, quantity);
+    }
+
+    public bool HasItem(ItemSo itemSo)
+    {
+        foreach (var slot in itemSlots)
+        {
+            if (slot.itemSo == itemSo && slot.quantity > 0)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int GetItemQuantity(ItemSo itemSo)
+    {
+        int total = 0;
+        foreach (var slot in itemSlots)
+        {
+            if (slot.itemSo == itemSo)
+            {
+                total += slot.quantity;
+            }
+        }
+        return total;
     }
 }

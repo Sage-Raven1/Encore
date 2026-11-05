@@ -18,13 +18,19 @@ public class QuestManager : MonoBehaviour
 
         if (objective.targetItem != null)
         {
-            // Here you would implement logic to count the number of target items the player has collected.
+            newAmount = InventoryManager.Instance.GetItemQuantity(objective.targetItem);
         }
+        else if (objective.targetNpc != null && DialogueHistoryTracker.Instance.HasSpokenWith(objective.targetNpc))
+        {
+            newAmount = objective.requiredAmount;
+        }
+
+        progressDictionary[objective] = newAmount;
     }
 
     public string GetProgressText(QuestSo questSo, QuestObjective objective)
     {
-        int currentAmount = 0;
+        int currentAmount = GetCurrentAmount(questSo, objective);
 
         if (currentAmount >= objective.requiredAmount)
         {
@@ -38,5 +44,17 @@ public class QuestManager : MonoBehaviour
         {
             return "In Progress";
         }
+    }
+
+    public int GetCurrentAmount(QuestSo questSo, QuestObjective objective)
+    {
+        if (questProgress.TryGetValue(questSo, out var objectiveDictionary))
+        {
+            if (objectiveDictionary.TryGetValue(objective, out int amount))
+            {
+                return amount;
+            }
+        }
+        return 0;
     }
 }
