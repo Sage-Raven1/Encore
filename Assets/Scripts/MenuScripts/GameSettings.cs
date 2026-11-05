@@ -6,8 +6,10 @@ public static class GameSettings
     // setting up default values
     public const float DefaultScrollSpeed = 5f;
     public const int DefaultAudioOffset = 0;
-    public const float DefaultMusicVolume = 0.8f;
-    public const float DefaultSfxVolume = 0.8f;
+    public const int DefaultMasterVolume = 70;
+    public const float DefaultMusicVolume = 70;
+    public const float DefaultSfxVolume = 70;
+    public const int DefaultAmbienceVolume = 70;
     public static readonly Key[] DefaultLaneKeys = { Key.A, Key.S, Key.L, Key.Semicolon };
 
     // assigning the values to each corresponding aspect of the game
@@ -16,6 +18,7 @@ public static class GameSettings
     public static float MusicVolume = DefaultMusicVolume;
     public static float SfxVolume = DefaultSfxVolume;
     public static Key[] LaneKeys = (Key[])DefaultLaneKeys.Clone();
+
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void Load()
