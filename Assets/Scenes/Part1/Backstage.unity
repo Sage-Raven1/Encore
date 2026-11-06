@@ -6090,7 +6090,6 @@ GameObject:
   - component: {fileID: 1029101333}
   - component: {fileID: 1029101336}
   - component: {fileID: 1029101335}
-  - component: {fileID: 1029101334}
   - component: {fileID: 1029101337}
   m_Layer: 5
   m_Name: QuestLog
@@ -6121,18 +6120,6 @@ RectTransform:
   m_AnchoredPosition: {x: -164.8054, y: 0.0000051259995}
   m_SizeDelta: {x: 389.2548, y: 395.6231}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!225 &1029101334
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1029101332}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!114 &1029101335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10772,6 +10759,18 @@ PrefabInstance:
     - target: {fileID: 3660072817399172891, guid: 510738326941356418ae9145f1919be3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5417555726100318966, guid: 510738326941356418ae9145f1919be3, type: 3}
+      propertyPath: m_Colors.m_PressedColor.b
+      value: 0.635591
+      objectReference: {fileID: 0}
+    - target: {fileID: 5417555726100318966, guid: 510738326941356418ae9145f1919be3, type: 3}
+      propertyPath: m_Colors.m_PressedColor.g
+      value: 0.635591
+      objectReference: {fileID: 0}
+    - target: {fileID: 5417555726100318966, guid: 510738326941356418ae9145f1919be3, type: 3}
+      propertyPath: m_Colors.m_PressedColor.r
+      value: 0.6509434
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
