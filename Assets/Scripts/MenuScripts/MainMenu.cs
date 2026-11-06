@@ -2,8 +2,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using TMPro;
 
 public class MainMenu : MonoBehaviour
 {
@@ -13,7 +11,7 @@ public class MainMenu : MonoBehaviour
 
     public Button storymodeButton;
     public Button freeplayButton;
-    public Button settingsButon;
+    public Button settingsButton;
     public Button quitButton;
 
     bool updatingUI;
@@ -29,7 +27,6 @@ public class MainMenu : MonoBehaviour
 #if UNITY_EDITOR
     void OnValidate()
     {
-        Debug.Log("OnValidate");
         storySceneName = storyScene != null ? storyScene.name : "";
         freeplaySceneName = freeplayScene != null ? freeplayScene.name : "";
     }
@@ -44,12 +41,16 @@ public class MainMenu : MonoBehaviour
 
     private void Awake()
     {
-        if (storymodeButton != null) storymodeButton.onClick.AddListener(v => { if (!updatingUI) { StartStory(); }  });
+        Debug.Log("Main menu awake func");
+        if (storymodeButton != null) storymodeButton.onClick.AddListener(StartStory);
+        if (freeplayButton != null) freeplayButton.onClick.AddListener(StartFreeplay);
+        if (settingsButton != null) settingsButton.onClick.AddListener(OpenSettings);
+        if (quitButton != null) quitButton.onClick.AddListener(QuitGame);
     }
 
     public void StartStory()
     {
-        Debug.Log("Story Pressed");
+        Debug.Log("Story Method Entered");
         continuePlay = SaveSystem.CheckSaveFile();
 
         if (continuePlay)
