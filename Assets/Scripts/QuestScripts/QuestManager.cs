@@ -6,6 +6,17 @@ public class QuestManager : MonoBehaviour
 {
     private Dictionary<QuestSo, Dictionary<QuestObjective, int>> questProgress = new();
 
+    public void AcceptQuest(QuestSo questSo)
+    {
+        questProgress[questSo] = new Dictionary<QuestObjective, int>();
+
+        foreach (var objective in questSo.objectives)
+        {
+            UpdateObjectiveProgress(questSo, objective);
+        }
+    }
+
+
     public void UpdateObjectiveProgress(QuestSo questSo, QuestObjective objective)
     {
         if (!questProgress.ContainsKey(questSo))

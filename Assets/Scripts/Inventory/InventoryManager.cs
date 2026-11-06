@@ -8,6 +8,7 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance;
 
     public Canvas inventoryCanvas;
+    public Canvas questCanvas;
 
     public InventorySlotScript[] itemSlots;
     public GameObject lootPrefab;
@@ -50,8 +51,12 @@ public class InventoryManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
-            //Debug.Log("pressed");
-            if (inventoryCanvas.enabled == true)
+            if (questCanvas.enabled == true)
+            {
+                questCanvas.enabled = false;
+                inventoryCanvas.enabled = true;
+            }
+            else if (inventoryCanvas.enabled == true)
             {
                 inventoryCanvas.enabled = false;
             }

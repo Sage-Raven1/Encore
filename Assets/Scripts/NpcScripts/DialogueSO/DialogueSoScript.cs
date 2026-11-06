@@ -7,6 +7,9 @@ public class DialogueSoScript : ScriptableObject
 {
     public DialogueLine[] dialogueLines;
 
+    [Header("Quest offer optional")]
+    public QuestSo offerQuestOnEnd;
+
     [Header("Conditional Dialogue Requirements (Optional)")]
     public ActorSoScript[] requiredNpcs;
     public ItemSo[] requiredItems;
@@ -27,18 +30,6 @@ public class DialogueSoScript : ScriptableObject
                 }
             }
         }
-        
-        if (requiredItems.Length > 0)
-        {
-            foreach (var item in requiredItems)
-            {
-                if (!StatsManager.Instance.playerInventory.Contains(item.itemName))
-                {
-                    return false;
-                }
-            }
-        }
-
         return true;
     }
 
@@ -56,4 +47,5 @@ public class DialogueOption
 {
     public string optionText;
     public DialogueSoScript nextDialogue;
+    public QuestSo offerQuest;
 }

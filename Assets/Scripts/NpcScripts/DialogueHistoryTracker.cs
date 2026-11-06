@@ -19,7 +19,6 @@ public class DialogueHistoryTracker : MonoBehaviour
     public void RecordNpcDialogue(ActorSoScript actorSO)
     {
         _spokenNPCs.Add(actorSO); 
-        //Debug.Log("spoken to an NPC " + actorSO.actorName);
     }
 
     public bool HasSpokenWith(ActorSoScript actorSO)

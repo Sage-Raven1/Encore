@@ -6,6 +6,7 @@ using TMPro;
 public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance;
+    [SerializeField] private QuestManager questManager;
 
     [Header("UI References")]
     public Canvas dialogueCanvas;
@@ -53,6 +54,12 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
+            //give quest if there is quest
+            if (_currentDialogue.offerQuestOnEnd != null)
+            {
+                //code
+                OnAcceptQuest();
+            }
             StatsManager.Instance.moveSpeed = _saveMoveSpeed;
             EndDialogue();
         }
@@ -79,5 +86,11 @@ public class DialogueManager : MonoBehaviour
         isDialogueActive = false;
         dialogueCanvas.enabled = false;
         dialoguePrompt.enabled = true;
+    }
+
+    private void OnAcceptQuest(QuestSo questSO)
+    {
+
+        questManager.AcceptQuest();
     }
 }
