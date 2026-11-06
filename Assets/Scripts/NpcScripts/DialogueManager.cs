@@ -58,7 +58,7 @@ public class DialogueManager : MonoBehaviour
             if (_currentDialogue.offerQuestOnEnd != null)
             {
                 //code
-                OnAcceptQuest();
+                OnAcceptQuest(null);
             }
             StatsManager.Instance.moveSpeed = _saveMoveSpeed;
             EndDialogue();
@@ -91,6 +91,6 @@ public class DialogueManager : MonoBehaviour
     private void OnAcceptQuest(QuestSo questSO)
     {
 
-        questManager.AcceptQuest();
+        questManager.AcceptQuest(null);
     }
 }
