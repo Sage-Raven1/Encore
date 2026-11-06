@@ -1,12 +1,20 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
     public GameObject SettingsPanel;
     public bool continuePlay;
     private StatsManager statsManager;
+
+    public Button storymodeButton;
+    public Button freeplayButton;
+    public Button settingsButton;
+    public Button quitButton;
+
+    bool updatingUI;
 
     [Header("Button Scenes")]
 #if UNITY_EDITOR
@@ -26,12 +34,23 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("MainMenu Init");
         if (SettingsPanel != null) SettingsPanel.SetActive(false);
         statsManager = GetComponent<StatsManager>();
     }
 
+    private void Awake()
+    {
+        Debug.Log("Main menu awake func");
+        if (storymodeButton != null) storymodeButton.onClick.AddListener(StartStory);
+        if (freeplayButton != null) freeplayButton.onClick.AddListener(StartFreeplay);
+        if (settingsButton != null) settingsButton.onClick.AddListener(OpenSettings);
+        if (quitButton != null) quitButton.onClick.AddListener(QuitGame);
+    }
+
     public void StartStory()
     {
+        Debug.Log("Story Method Entered");
         continuePlay = SaveSystem.CheckSaveFile();
 
         if (continuePlay)
@@ -56,17 +75,20 @@ public class MainMenu : MonoBehaviour
 
     public void StartFreeplay()
     {
+        Debug.Log("Freeplay Pressed");
         GameSession.Mode = GameMode.Freeplay;
         LoadScene(freeplaySceneName, "Freeplay");
     }
 
     public void OpenSettings()
     {
+        Debug.Log("Settings Pressed");
         if (SettingsPanel != null) SettingsPanel.SetActive(true);
     }
 
     public void QuitGame()
     {
+        Debug.Log("Quit Pressed");
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else

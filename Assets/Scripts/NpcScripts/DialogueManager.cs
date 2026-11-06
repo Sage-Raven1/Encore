@@ -54,11 +54,11 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            //give quest if there is quest
             if (_currentDialogue.offerQuestOnEnd != null)
             {
-                //code
-                //OnAcceptQuest();
+
+                OnAcceptQuest(null);
+
             }
             StatsManager.Instance.moveSpeed = _saveMoveSpeed;
             EndDialogue();
@@ -91,6 +91,6 @@ public class DialogueManager : MonoBehaviour
     private void OnAcceptQuest(QuestSo questSO)
     {
 
-        questManager.AcceptQuest();
+        questManager.AcceptQuest(null);
     }
 }
