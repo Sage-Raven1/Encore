@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance;
-    [SerializeField] private QuestManager questManager;
 
     [Header("UI References")]
     public Canvas dialogueCanvas;
@@ -56,9 +55,9 @@ public class DialogueManager : MonoBehaviour
         {
             if (_currentDialogue.offerQuestOnEnd != null)
             {
-
-                OnAcceptQuest(null);
-
+                Debug.Log("Quest Offered: " + _currentDialogue.offerQuestOnEnd.questName);
+                QuestManager.Instance.AcceptQuest(_currentDialogue.offerQuestOnEnd);//here is quest acceptance
+               
             }
             StatsManager.Instance.moveSpeed = _saveMoveSpeed;
             EndDialogue();
@@ -86,11 +85,5 @@ public class DialogueManager : MonoBehaviour
         isDialogueActive = false;
         dialogueCanvas.enabled = false;
         dialoguePrompt.enabled = true;
-    }
-
-    private void OnAcceptQuest(QuestSo questSO)
-    {
-
-        questManager.AcceptQuest(null);
     }
 }

@@ -31,14 +31,17 @@ public class TalkNpc : MonoBehaviour
 
     private void OnDisable()
     {
-        dialoguePrompt.enabled = false;
+        if (dialoguePrompt != null)
+        {
+            dialoguePrompt.enabled = false;
+        }
         _body.velocity = Vector2.zero;
         _body.bodyType = RigidbodyType2D.Dynamic;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && InventoryManager.Instance.inventoryCanvas.enabled == false && QuestLogUI.Instance.questCanvas.enabled == false)
         {
             //Debug.Log("pressed");
             if (DialogueManager.Instance.isDialogueActive)
@@ -62,7 +65,7 @@ public class TalkNpc : MonoBehaviour
             {
                 currentConversation = convo;
 
-                if(convo.removeAfterPlay)
+                if(convo.removeAfterPlay || convo.offerQuestOnEnd != null)
                 {
                     conversations.RemoveAt(i);
                 }

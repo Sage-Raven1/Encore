@@ -4,7 +4,27 @@ using UnityEngine;
 
 public class QuestManager : MonoBehaviour
 {
+    public static QuestManager Instance;
+
     private Dictionary<QuestSo, Dictionary<QuestObjective, int>> questProgress = new();
+    
+    public List<QuestSo> GetActiveQuests()
+    {
+        return new List<QuestSo>(questProgress.Keys);
+    }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     public void AcceptQuest(QuestSo questSo)
     {
@@ -14,6 +34,7 @@ public class QuestManager : MonoBehaviour
         {
             UpdateObjectiveProgress(questSo, objective);
         }
+        QuestLogUI.Instance.RefreshQuestList();
     }
 
 

@@ -8,11 +8,12 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance;
 
     public Canvas inventoryCanvas;
-    public Canvas questCanvas;
 
     public InventorySlotScript[] itemSlots;
     public GameObject lootPrefab;
     public Transform player;
+
+    private float _saveMoveSpeed;
 
     private void Awake()
     {
@@ -49,20 +50,23 @@ public class InventoryManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.B) && !DialogueManager.Instance.isDialogueActive)
         {
-            if (questCanvas.enabled == true)
+            if (QuestLogUI.Instance.questCanvas.enabled == true)
             {
-                questCanvas.enabled = false;
+                QuestLogUI.Instance.questCanvas.enabled = false;
                 inventoryCanvas.enabled = true;
             }
             else if (inventoryCanvas.enabled == true)
             {
                 inventoryCanvas.enabled = false;
+                StatsManager.Instance.moveSpeed = _saveMoveSpeed;
             }
             else
             {
+                _saveMoveSpeed = StatsManager.Instance.moveSpeed;
                 inventoryCanvas.enabled = true;
+                StatsManager.Instance.moveSpeed = 0f;
             }
         }
     }
