@@ -56,9 +56,9 @@ public class SettingsMenu : MonoBehaviour
     public Button DELETESAVEFILE;
 
     //dropdowns
-    public Dropdown fullscreenDropdown;
-    public Dropdown resolutionDropdown;
-    public Dropdown audioDeviceDropdown;
+    public TMP_Dropdown fullscreenDropdown;
+    public TMP_Dropdown resolutionDropdown;
+    public TMP_Dropdown audioDeviceDropdown;
 
     // pendings settings (changeable)
     float pendingScroll;
@@ -89,13 +89,13 @@ public class SettingsMenu : MonoBehaviour
         SetupSlider(ambienceVolumeSlider, 0, 100);
 
         //slider listeners
-        if (scrollSlider != null) scrollSlider.onValueChanged.AddListener(v => { if (!updatingUI) { pendingScroll = v / 2f; RefreshLabels(); } });
-        if (offsetSlider != null) offsetSlider.onValueChanged.AddListener(v => { if (!updatingUI) { pendingOffset = Mathf.RoundToInt(v); RefreshLabels(); } });
-        if (qualitySlider != null) qualitySlider.onValueChanged.AddListener(v => { if (!updatingUI) { pendingQuality = Mathf.RoundToInt(v); RefreshLabels(); } });
-        if (masterVolumeSlider != null) masterVolumeSlider.onValueChanged.AddListener(v => { if (!updatingUI) { AudioLevel(masterVol, masterVolumeSlider.value); pendingMasterVol = masterVolumeSlider.value; } });
-        if (musicVolumeSlider != null) musicVolumeSlider.onValueChanged.AddListener(v => { if (!updatingUI) { AudioLevel(musicVol, musicVolumeSlider.value); pendingMusicVol = musicVolumeSlider.value; } });
-        if (sfxVolumeSlider != null) sfxVolumeSlider.onValueChanged.AddListener(v => { if (!updatingUI) { AudioLevel(sfxVol, sfxVolumeSlider.value); pendingSfxVol = sfxVolumeSlider.value; } });
-        if (ambienceVolumeSlider != null) ambienceVolumeSlider.onValueChanged.AddListener(v => { if (!updatingUI) { AudioLevel(ambienceVol, ambienceVolumeSlider.value); pendingAmbienceVol = ambienceVolumeSlider.value; } });
+        scrollSlider.onValueChanged.AddListener(v => { if (!updatingUI) { pendingScroll = v / 2f; RefreshLabels(); } });
+        offsetSlider.onValueChanged.AddListener(v => { if (!updatingUI) { pendingOffset = Mathf.RoundToInt(v); RefreshLabels(); } });
+        qualitySlider.onValueChanged.AddListener(v => { if (!updatingUI) { pendingQuality = Mathf.RoundToInt(v); RefreshLabels(); } });
+        masterVolumeSlider.onValueChanged.AddListener(v => { if (!updatingUI) { AudioLevel(masterVol, masterVolumeSlider.value); pendingMasterVol = masterVolumeSlider.value; } });
+        musicVolumeSlider.onValueChanged.AddListener(v => { if (!updatingUI) { AudioLevel(musicVol, musicVolumeSlider.value); pendingMusicVol = musicVolumeSlider.value; } });
+        sfxVolumeSlider.onValueChanged.AddListener(v => { if (!updatingUI) { AudioLevel(sfxVol, sfxVolumeSlider.value); pendingSfxVol = sfxVolumeSlider.value; } });
+        ambienceVolumeSlider.onValueChanged.AddListener(v => { if (!updatingUI) { AudioLevel(ambienceVol, ambienceVolumeSlider.value); pendingAmbienceVol = ambienceVolumeSlider.value; } });
 
         //key rebind listeners
         for (int i = 0; i < laneButtons.Length; i++)
@@ -106,20 +106,26 @@ public class SettingsMenu : MonoBehaviour
         }
 
         //button listeners
-        if (resetKeysButton != null) resetKeysButton.onClick.AddListener(ResetToDefaults);
-        if (saveCloseButton != null) saveCloseButton.onClick.AddListener(SaveAndClose);
-        if (discardButton != null) discardButton.onClick.AddListener(() => TempEmpty()); //change
-        if (gameplayButton != null) gameplayButton.onClick.AddListener(() => SettingsTab(gameplayTab));
-        if (displayButton != null) displayButton.onClick.AddListener(() => SettingsTab(displayTab));
-        if (audioButton != null) audioButton.onClick.AddListener( () => SettingsTab(audioTab));
-        if (saveFileButton != null) saveFileButton.onClick.AddListener(() => SettingsTab(saveFileTab));
-        if (DELETESAVEFILE != null) DELETESAVEFILE.onClick.AddListener(() => TempEmpty()); //change
+        resetKeysButton.onClick.AddListener(ResetToDefaults);
+        saveCloseButton.onClick.AddListener(SaveAndClose);
+        discardButton.onClick.AddListener(() => TempEmpty()); //change
+        gameplayButton.onClick.AddListener(() => SettingsTab(gameplayTab));
+        displayButton.onClick.AddListener(() => SettingsTab(displayTab));
+        audioButton.onClick.AddListener(() => SettingsTab(audioTab));
+        saveFileButton.onClick.AddListener(() => SettingsTab(saveFileTab));
+        DELETESAVEFILE.onClick.AddListener(() => TempEmpty()); //change
 
         //dropdown listeners
-        if (fullscreenDropdown != null) fullscreenDropdown.onValueChanged.AddListener(delegate { pendingFullscreen = fullscreenDropdown.value; });
-        if (resolutionDropdown != null) resolutionDropdown.onValueChanged.AddListener(delegate { pendingResolution = resolutionDropdown.value; });
+        fullscreenDropdown.onValueChanged.AddListener(delegate
+        {
+            pendingFullscreen = fullscreenDropdown.value;
+        });
+        resolutionDropdown.onValueChanged.AddListener(delegate
+        {
+            pendingResolution = resolutionDropdown.value;
+        });
 
-        if (settingsPanel != null) settingsPanel.SetActive(false);
+        settingsPanel.SetActive(false);
     }
 
     private void TempEmpty() { }
@@ -144,22 +150,18 @@ public class SettingsMenu : MonoBehaviour
 
         listeningLane = -1;
 
-        if (gameplayTab != null) gameplayTab.SetActive(true);
-        if (displayTab != null) displayTab.SetActive(false);
-        if (audioTab != null) audioTab.SetActive(false);
-        if (saveFileTab != null) saveFileTab.SetActive(false);
-
         RefreshUI();
 
         foreach (GameObject obj in hideWhileOpen)
             if (obj != null) obj.SetActive(false);
-        if (settingsPanel != null) settingsPanel.SetActive(true);
+        settingsPanel.SetActive(true);
+        SettingsTab(gameplayTab);
     }
 
     public void Close()
     {
         listeningLane = -1;
-        if (settingsPanel != null) settingsPanel.SetActive(false);
+        settingsPanel.SetActive(false);
         foreach (GameObject obj in hideWhileOpen)
             if (obj != null) obj.SetActive(true);
     }
@@ -201,10 +203,10 @@ public class SettingsMenu : MonoBehaviour
     {
         if (tab != null)
         {
-            if (gameplayTab != null) gameplayTab.SetActive(false);
-            if (displayTab != null) displayTab.SetActive(false);
-            if (audioTab != null) audioTab.SetActive(false);
-            if (saveFileTab != null) saveFileTab.SetActive(false);
+            gameplayTab.SetActive(false);
+            displayTab.SetActive(false);
+            audioTab.SetActive(false);
+            saveFileTab.SetActive(false);
 
             tab.SetActive(true);
         }

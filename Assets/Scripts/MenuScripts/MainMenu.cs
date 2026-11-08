@@ -1,7 +1,9 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Debug = UnityEngine.Debug;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 public class MainMenu : MonoBehaviour
 {
@@ -41,11 +43,12 @@ public class MainMenu : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log(storymodeButton.name);
         Debug.Log("Main menu awake func");
-        if (storymodeButton != null) storymodeButton.onClick.AddListener(StartStory);
-        if (freeplayButton != null) freeplayButton.onClick.AddListener(StartFreeplay);
-        if (settingsButton != null) settingsButton.onClick.AddListener(OpenSettings);
-        if (quitButton != null) quitButton.onClick.AddListener(QuitGame);
+        storymodeButton.onClick.AddListener(StartStory);
+        freeplayButton.onClick.AddListener(StartFreeplay);
+        settingsButton.onClick.AddListener(OpenSettings);
+        quitButton.onClick.AddListener(QuitGame);
     }
 
     public void StartStory()
@@ -83,7 +86,7 @@ public class MainMenu : MonoBehaviour
     public void OpenSettings()
     {
         Debug.Log("Settings Pressed");
-        if (SettingsPanel != null) SettingsPanel.SetActive(true);
+        SettingsPanel.SetActive(true);
     }
 
     public void QuitGame()
