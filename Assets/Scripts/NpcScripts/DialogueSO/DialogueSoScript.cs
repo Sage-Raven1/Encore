@@ -20,11 +20,19 @@ public class DialogueSoScript : ScriptableObject
 
     public bool IsConditionMet()
     {
-        if (requiredNpcs.Length > 0)
+        if (requiredNpcs.Length > 0 || requiredItems.Length > 0)
         {
             foreach (var npc in requiredNpcs)
             {
                 if (!DialogueHistoryTracker.Instance.HasSpokenWith(npc))
+                {
+                    return false;
+                }
+            }
+
+            foreach (var item in requiredItems)
+            {
+                if (!InventoryManager.Instance.HasItem(item))
                 {
                     return false;
                 }
@@ -48,4 +56,4 @@ public class DialogueOption
     public string optionText;
     public DialogueSoScript nextDialogue;
     public QuestSo offerQuest;
-}
+}//not in game code, can be used to create dialogue options
