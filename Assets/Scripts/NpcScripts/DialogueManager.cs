@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using System.Linq;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class DialogueManager : MonoBehaviour
 
     private DialogueSoScript _currentDialogue;
     private int _dialogueIndex;
-
+    private QuestManager questManager;
     private float _saveMoveSpeed;
 
     private void Awake()
@@ -32,6 +33,7 @@ public class DialogueManager : MonoBehaviour
             Destroy(gameObject);
         }
         dialogueCanvas.enabled = false;
+        questManager = FindObjectOfType<QuestManager>();
     }
 
     public void StartDialogue(DialogueSoScript dialogue)
@@ -56,12 +58,12 @@ public class DialogueManager : MonoBehaviour
             if (_currentDialogue.offerQuestOnEnd != null)
             {
                 Debug.Log("Quest Offered: " + _currentDialogue.offerQuestOnEnd.questName);
-                QuestManager.Instance.AcceptQuest(_currentDialogue.offerQuestOnEnd);//here is quest acceptance
+                questManager.AcceptQuest(_currentDialogue.offerQuestOnEnd);//here is quest acceptance
             }
-            else if (_currentDialogue.turnInQuestOnEnd != null)
+            else if (_currentDialogue.turnInQuestOnEnd != null && _currentDialogue.turnInQuestOnEnd.objectives.All(obj => questManager.IsQuestCompleted(_currentDialogue.turnInQuestOnEnd, obj)))
             {
                 Debug.Log("Quest Turned In: " + _currentDialogue.turnInQuestOnEnd.questName);
-                QuestManager.Instance.CompleteQuest(_currentDialogue.turnInQuestOnEnd);//here is quest turn in
+                questManager.CompleteQuest(_currentDialogue.turnInQuestOnEnd, _currentDialogue.turnInQuestOnEnd.objectives[0]);//here is quest turn in 
             }
             StatsManager.Instance.moveSpeed = _saveMoveSpeed;
             EndDialogue();

@@ -15,6 +15,10 @@ MonoBehaviour:
   dialogueLines:
   - speaker: {fileID: 11400000, guid: 5d20e8b93701efd4994b103b45950732, type: 2}
     text: Its empty, what did you expect.
-  dialogueOptions: []
-  requiredNpcs:
-  - {fileID: 11400000, guid: 5d20e8b93701efd4994b103b45950732, type: 2}
+  offerQuestOnEnd: {fileID: 0}
+  requiredCompletedQuests: []
+  turnInQuestOnEnd: {fileID: 0}
+  requiredNpcs: []
+  requiredItems: []
+  removeAfterPlay: 0
+  removeDialogueOnPlay: []

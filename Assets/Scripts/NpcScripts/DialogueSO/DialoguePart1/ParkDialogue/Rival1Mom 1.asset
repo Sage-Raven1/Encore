@@ -20,7 +20,7 @@ MonoBehaviour:
   - speaker: {fileID: 11400000, guid: 5a4cf6c60d2652f49a00eeaa0a5eaa04, type: 2}
     text: Keep it, it may remind you of her.
   offerQuestOnEnd: {fileID: 0}
-  requiredCompletedQuests: {fileID: 0}
+  requiredCompletedQuests: []
   turnInQuestOnEnd: {fileID: 11400000, guid: 2c91669cbbc52164a9f8a760ae13b481, type: 2}
   requiredNpcs: []
   requiredItems: []

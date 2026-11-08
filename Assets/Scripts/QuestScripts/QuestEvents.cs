@@ -6,4 +6,6 @@ using UnityEngine;
 public static class QuestEvents
 {
     public static Action<QuestSo> OnQuestAccepted;
+
+    //here are events for a more complex quest system
 }

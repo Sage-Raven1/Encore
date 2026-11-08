@@ -22,5 +22,10 @@ MonoBehaviour:
       glad you got to sing with..
   - speaker: {fileID: 11400000, guid: 5a4cf6c60d2652f49a00eeaa0a5eaa04, type: 2}
     text: Your "sister".
-  dialogueOptions: []
+  offerQuestOnEnd: {fileID: 0}
+  requiredCompletedQuests: []
+  turnInQuestOnEnd: {fileID: 0}
   requiredNpcs: []
+  requiredItems: []
+  removeAfterPlay: 1
+  removeDialogueOnPlay: []

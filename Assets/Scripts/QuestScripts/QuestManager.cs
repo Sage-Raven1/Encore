@@ -37,9 +37,9 @@ public class QuestManager : MonoBehaviour
         QuestLogUI.Instance.RefreshQuestList();
     }
 
-    public void CompleteQuest(QuestSo questSo)
+    public void CompleteQuest(QuestSo questSo, QuestObjective objective)
     {
-        if (IsQuestCompleted(questSo))
+        if (IsQuestCompleted(questSo, objective))
         {
             questProgress.Remove(questSo);
             QuestLogUI.Instance.RefreshQuestList();
@@ -105,16 +105,11 @@ public class QuestManager : MonoBehaviour
     }
 
     //error here
-    public bool IsQuestCompleted(QuestSo questSo)
+    public bool IsQuestCompleted(QuestSo questSo, QuestObjective objective)
     {
-        if (!questProgress.ContainsKey(questSo))
+        foreach (var obj in questSo.objectives)
         {
-            return false;
-        }
-        var progressDictionary = questProgress[questSo];
-        foreach (var objective in questSo.objectives)
-        {
-            if (!progressDictionary.TryGetValue(objective, out int currentAmount) || currentAmount < objective.requiredAmount)
+            if (!questProgress.ContainsKey(questSo) || !questProgress[questSo].ContainsKey(obj))
             {
                 return false;
             }

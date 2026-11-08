@@ -37,7 +37,7 @@ public class WanderNpc : MonoBehaviour
         {
             StartCoroutine(PauseAndPickNewTarget());
         }
-        Vector2 direction = (_wanderDirection - (Vector2)transform.position).normalized;
+        Vector2 direction = (_wanderDirection - (Vector2)transform.position);
         _body.velocity = direction * moveSpeed;
     }
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [CreateAssetMenu(fileName = "New Dialogue", menuName = "Npc SO/NPC Dialogue")]
 public class DialogueSoScript : ScriptableObject
@@ -11,7 +12,7 @@ public class DialogueSoScript : ScriptableObject
     public QuestSo offerQuestOnEnd;
 
     [Header("Complete Quest requirements")]
-    public QuestSo requiredCompletedQuests;
+    public QuestSo[] requiredCompletedQuests;
 
     [Header("Quest Turnin")]
     public QuestSo turnInQuestOnEnd;
@@ -26,8 +27,8 @@ public class DialogueSoScript : ScriptableObject
 
     public bool IsConditionMet()
     {
-        if (requiredNpcs.Length > 0 || requiredItems.Length > 0 || requiredCompletedQuests != null)
-        {
+        if (requiredNpcs.Length > 0 || requiredItems.Length > 0 || requiredCompletedQuests != null || turnInQuestOnEnd != null)
+        {   
             foreach (var npc in requiredNpcs)
             {
                 if (!DialogueHistoryTracker.Instance.HasSpokenWith(npc))
@@ -44,7 +45,15 @@ public class DialogueSoScript : ScriptableObject
                 }
             }
 
-            if (!QuestManager.Instance.IsQuestCompleted(requiredCompletedQuests))
+            foreach (var quest in requiredCompletedQuests)
+            {
+                if (!QuestManager.Instance.IsQuestCompleted(quest, quest.objectives[0]))
+                {
+                    return false;
+                }
+            }
+            
+            if (turnInQuestOnEnd != null && !turnInQuestOnEnd.objectives.All(obj => QuestManager.Instance.IsQuestCompleted(turnInQuestOnEnd, obj)))
             {
                 return false;
             }

@@ -17,6 +17,10 @@ MonoBehaviour:
     text: Go, your next competition in is in Beach city
   - speaker: {fileID: 11400000, guid: 5a4cf6c60d2652f49a00eeaa0a5eaa04, type: 2}
     text: ..Maybe I should bury her there.
-  dialogueOptions: []
-  requiredNpcs:
-  - {fileID: 11400000, guid: 5a4cf6c60d2652f49a00eeaa0a5eaa04, type: 2}
+  offerQuestOnEnd: {fileID: 0}
+  requiredCompletedQuests: []
+  turnInQuestOnEnd: {fileID: 0}
+  requiredNpcs: []
+  requiredItems: []
+  removeAfterPlay: 0
+  removeDialogueOnPlay: []

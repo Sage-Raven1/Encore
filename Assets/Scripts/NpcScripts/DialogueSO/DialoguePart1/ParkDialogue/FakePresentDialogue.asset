@@ -17,5 +17,10 @@ MonoBehaviour:
     text: You open it and..
   - speaker: {fileID: 11400000, guid: 5d20e8b93701efd4994b103b45950732, type: 2}
     text: Its empty, what did you expect.
-  dialogueOptions: []
+  offerQuestOnEnd: {fileID: 0}
+  requiredCompletedQuests: []
+  turnInQuestOnEnd: {fileID: 0}
   requiredNpcs: []
+  requiredItems: []
+  removeAfterPlay: 1
+  removeDialogueOnPlay: []
