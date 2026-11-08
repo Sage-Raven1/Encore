@@ -10,16 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4220acdd7f5ec64ab067873248543d8, type: 3}
-  m_Name: TropicalDialogue
+  m_Name: TropicalExposition
   m_EditorClassIdentifier: 
   dialogueLines:
   - speaker: {fileID: 11400000, guid: 0e57d42f00746134fb302a557a5387b8, type: 2}
-    text: Hey, are you here for the music festival???
+    text: Are you here for the Music Festival too???
   - speaker: {fileID: 11400000, guid: 0e57d42f00746134fb302a557a5387b8, type: 2}
-    text: I can't wait to dance all day, I heard the headliners super impressive.
+    text: I heard that the headliners are super impressive this year!!!
   - speaker: {fileID: 11400000, guid: 0e57d42f00746134fb302a557a5387b8, type: 2}
-    text: What was her name? Ebi?
+    text: My bets on the guy, I heard he has crazy vocals!
   - speaker: {fileID: 11400000, guid: 0e57d42f00746134fb302a557a5387b8, type: 2}
-    text: ...Like the shrimp?
-  dialogueOptions: []
+    text: The other guy? ...Girl? Idk I think her name is Ebi? Like the shrimp???
+  offerQuestOnEnd: {fileID: 0}
+  requiredCompletedQuests: []
+  turnInQuestOnEnd: {fileID: 0}
   requiredNpcs: []
+  requiredItems: []
+  removeAfterPlay: 1
+  removeDialogueOnPlay: []

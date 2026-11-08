@@ -20,10 +20,14 @@ MonoBehaviour:
   - speaker: {fileID: 11400000, guid: 914e1dba4a0bb0e4fa9172311b0e912f, type: 2}
     text: ...Your brother too.
   - speaker: {fileID: 11400000, guid: 914e1dba4a0bb0e4fa9172311b0e912f, type: 2}
-    text: Anyways, your next round is in Beach City. Remember how to get there?
+    text: Lets get back on topic. Congrats for your first win! just four more to
+      go until the number one spot is yours.
   - speaker: {fileID: 11400000, guid: 914e1dba4a0bb0e4fa9172311b0e912f, type: 2}
-    text: Follow this road left and just keep going.
-  - speaker: {fileID: 11400000, guid: 914e1dba4a0bb0e4fa9172311b0e912f, type: 2}
-    text: Good luck!
-  dialogueOptions: []
+    text: Well, get on with it. Off you go.
+  offerQuestOnEnd: {fileID: 11400000, guid: 5e46f7da8ea74b44aaaaeed4707b8f22, type: 2}
+  requiredCompletedQuests: []
+  turnInQuestOnEnd: {fileID: 0}
   requiredNpcs: []
+  requiredItems: []
+  removeAfterPlay: 1
+  removeDialogueOnPlay: []

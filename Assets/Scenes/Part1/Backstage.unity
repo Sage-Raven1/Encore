@@ -298,12 +298,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8239330411061335092, guid: e3c038f8db5acb94396a08ecb60fa27f, type: 3}
+      propertyPath: sceneToLoad
+      value: StageOne
+      objectReference: {fileID: 0}
+    - target: {fileID: -8239330411061335092, guid: e3c038f8db5acb94396a08ecb60fa27f, type: 3}
       propertyPath: newPlayerLocation.x
-      value: 14
+      value: 9.5
       objectReference: {fileID: 0}
     - target: {fileID: -8239330411061335092, guid: e3c038f8db5acb94396a08ecb60fa27f, type: 3}
       propertyPath: newPlayerLocation.y
-      value: -3.5
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 5144626619217173056, guid: e3c038f8db5acb94396a08ecb60fa27f, type: 3}
       propertyPath: m_RootOrder
@@ -351,7 +355,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5144626619217173057, guid: e3c038f8db5acb94396a08ecb60fa27f, type: 3}
       propertyPath: m_Name
-      value: Teleport(Park)
+      value: Teleport(StageOne)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

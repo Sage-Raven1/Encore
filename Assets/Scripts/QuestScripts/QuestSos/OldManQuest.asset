@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5f9a29c6d65ed04a9c7a2afa1f32422, type: 3}
+  m_Name: OldManQuest
+  m_EditorClassIdentifier: 
+  questName: Bones? What is he saying..
+  objectives:
+  - description: find brother grave
+    target: {fileID: 11400000, guid: d0732d198c62e944fb6fb9e6af58f825, type: 2}
+    requiredAmount: 0

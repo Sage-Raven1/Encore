@@ -10,10 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4220acdd7f5ec64ab067873248543d8, type: 3}
-  m_Name: HomelessDialogue
+  m_Name: ShopTalk
   m_EditorClassIdentifier: 
   dialogueLines:
-  - speaker: {fileID: 11400000, guid: 769a1579b290d494f8669c08abf7b632, type: 2}
-    text: I used to have house dreams until I became homeless
-  dialogueOptions: []
+  - speaker: {fileID: 11400000, guid: 8b0bb020dd0c2ba41bdd1f7ab3a1c9b2, type: 2}
+    text: Closed for the Music Festival!
+  offerQuestOnEnd: {fileID: 0}
+  requiredCompletedQuests: []
+  turnInQuestOnEnd: {fileID: 0}
   requiredNpcs: []
+  requiredItems: []
+  removeAfterPlay: 0
+  removeDialogueOnPlay: []

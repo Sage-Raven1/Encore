@@ -15,5 +15,10 @@ MonoBehaviour:
   dialogueLines:
   - speaker: {fileID: 11400000, guid: 303fb22277d7a8e4eb39a96753b0da77, type: 2}
     text: Bones.. Dead.. Park.. Dead!
-  dialogueOptions: []
+  offerQuestOnEnd: {fileID: 11400000, guid: a139e179563bf4449baf0a43143520a0, type: 2}
+  requiredCompletedQuests: []
+  turnInQuestOnEnd: {fileID: 0}
   requiredNpcs: []
+  requiredItems: []
+  removeAfterPlay: 0
+  removeDialogueOnPlay: []

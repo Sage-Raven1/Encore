@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5f9a29c6d65ed04a9c7a2afa1f32422, type: 3}
+  m_Name: MainQuest
+  m_EditorClassIdentifier: 
+  questName: Win The Game
+  objectives:
+  - description: talk to brother in heaven or sm
+    target: {fileID: 11400000, guid: 3969ec8596f001a499b048be4c899f70, type: 2}
+    requiredAmount: 1
