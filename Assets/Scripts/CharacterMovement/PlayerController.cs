@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,13 +13,14 @@ public class PlayerController : MonoBehaviour
 
     public float moveAngle;
     public float direction;
+    public bool moving;
 
     private Rigidbody2D body;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private StatsManager statsManager; // line Anjun added, make sure you open VS from the sln file to have syntax highlight.
-
-    private float mSpeed;
+    private AudioSource audioSource;
+    private string sceneName;
 
     void Awake()
     {
@@ -27,6 +29,10 @@ public class PlayerController : MonoBehaviour
         controls = new CharacterInput();
         spriteRenderer = GetComponent<SpriteRenderer>();
         statsManager = GetComponent<StatsManager>(); // line Anjun added
+        audioSource = GetComponent<AudioSource>();
+
+        Scene currentScene = SceneManager.GetActiveScene();
+        sceneName = currentScene.name;
 
         //mSpeed = statsManager.moveSpeed; saving movespeed in a var locks movespeed and can't be changed by other scripts. So we will use statsManager.moveSpeed directly in FixedUpdate
     }
@@ -36,6 +42,11 @@ public class PlayerController : MonoBehaviour
         move = controls.Player.Movement.ReadValue<Vector2>();
         move.Normalize();
         body.velocity = new Vector2(move.x * statsManager.moveSpeed, move.y * statsManager.moveSpeed);
+        moving = (Mathf.Abs(body.velocity.x) + Mathf.Abs(body.velocity.y) == 0) ? false : true;
+        if (moving)
+        {
+            if(sceneName != "MenuScreen") audioSource.Play();
+        } 
 
         moveAngle = PlayerAngle(move);
         PlayerAnimSwitch(moveAngle);
@@ -50,7 +61,6 @@ public class PlayerController : MonoBehaviour
 
     private void PlayerAnimSwitch(float angle)
     {
-        bool moving = (Mathf.Abs(body.velocity.x) + Mathf.Abs(body.velocity.y) == 0) ? false : true;
         if (moving)
         {
             direction = Mathf.Abs(angle);

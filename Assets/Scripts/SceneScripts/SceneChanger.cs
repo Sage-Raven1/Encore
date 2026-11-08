@@ -34,6 +34,8 @@ public class SceneChanger : MonoBehaviour
     {
         yield return new WaitForSeconds(fadeTime);
         statsManager.currentScene = sceneToLoad;
+        statsManager.SavePlayer();
+        UnityEngine.Debug.Log(statsManager.currentScene);
         SceneManager.LoadScene(sceneToLoad);
         _player.position = newPlayerLocation;
     }

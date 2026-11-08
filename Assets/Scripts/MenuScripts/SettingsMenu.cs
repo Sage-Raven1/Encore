@@ -7,6 +7,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.UI;
+using System.IO;
+using System.Collections.Generic;
 
 public class SettingsMenu : MonoBehaviour
 {
@@ -17,10 +19,7 @@ public class SettingsMenu : MonoBehaviour
     public GameObject saveFileTab;
     public GameObject[] hideWhileOpen;
 
-    public AudioMixer masterVol;
-    public AudioMixer musicVol;
-    public AudioMixer sfxVol;
-    public AudioMixer ambienceVol;
+    public AudioMixer mixer;
 
     // sliders
     public Slider scrollSlider;
@@ -76,7 +75,24 @@ public class SettingsMenu : MonoBehaviour
     int listeningLane = -1;
     int listenStartFrame;
     bool updatingUI;
+    Resolution[] resolutions;
 
+    private void Start()
+    {
+        resolutionDropdown.ClearOptions();
+        List<string> resolutionList = new List<string>();
+        resolutions = Screen.resolutions;
+        for (int i = 0; i < resolutions.Length; i++)
+        {
+            string option = resolutions[i].width + " X " + resolutions[i].height;
+            resolutionList.Add(option);
+            if (resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height) pendingResolution = i;
+        }
+        SwitchResolution(pendingResolution);
+        resolutionDropdown.AddOptions(resolutionList);
+        resolutionDropdown.RefreshShownValue();
+        RefreshQuality(GameSettings.Quality);
+    }
     void Awake()
     {
         // baseline restrictions for sliders
@@ -91,11 +107,11 @@ public class SettingsMenu : MonoBehaviour
         //slider listeners
         scrollSlider.onValueChanged.AddListener(v => { if (!updatingUI) { pendingScroll = v / 2f; RefreshLabels(); } });
         offsetSlider.onValueChanged.AddListener(v => { if (!updatingUI) { pendingOffset = Mathf.RoundToInt(v); RefreshLabels(); } });
-        qualitySlider.onValueChanged.AddListener(v => { if (!updatingUI) { pendingQuality = Mathf.RoundToInt(v); RefreshLabels(); } });
-        masterVolumeSlider.onValueChanged.AddListener(v => { if (!updatingUI) { AudioLevel(masterVol, masterVolumeSlider.value); pendingMasterVol = masterVolumeSlider.value; } });
-        musicVolumeSlider.onValueChanged.AddListener(v => { if (!updatingUI) { AudioLevel(musicVol, musicVolumeSlider.value); pendingMusicVol = musicVolumeSlider.value; } });
-        sfxVolumeSlider.onValueChanged.AddListener(v => { if (!updatingUI) { AudioLevel(sfxVol, sfxVolumeSlider.value); pendingSfxVol = sfxVolumeSlider.value; } });
-        ambienceVolumeSlider.onValueChanged.AddListener(v => { if (!updatingUI) { AudioLevel(ambienceVol, ambienceVolumeSlider.value); pendingAmbienceVol = ambienceVolumeSlider.value; } });
+        qualitySlider.onValueChanged.AddListener(v => { if (!updatingUI) { pendingQuality = Mathf.RoundToInt(v); RefreshQuality(v); } });
+        masterVolumeSlider.onValueChanged.AddListener(v => { if (!updatingUI) { AudioLevel("MasterVolume", masterVolumeSlider.value); pendingMasterVol = masterVolumeSlider.value; } });
+        musicVolumeSlider.onValueChanged.AddListener(v => { if (!updatingUI) { AudioLevel("MusicVolume", musicVolumeSlider.value); pendingMusicVol = musicVolumeSlider.value; } });
+        sfxVolumeSlider.onValueChanged.AddListener(v => { if (!updatingUI) { AudioLevel("SFXVolume", sfxVolumeSlider.value); pendingSfxVol = sfxVolumeSlider.value; } });
+        ambienceVolumeSlider.onValueChanged.AddListener(v => { if (!updatingUI) { AudioLevel("AmbienceVolume", ambienceVolumeSlider.value); pendingAmbienceVol = ambienceVolumeSlider.value; } });
 
         //key rebind listeners
         for (int i = 0; i < laneButtons.Length; i++)
@@ -108,27 +124,27 @@ public class SettingsMenu : MonoBehaviour
         //button listeners
         resetKeysButton.onClick.AddListener(ResetToDefaults);
         saveCloseButton.onClick.AddListener(SaveAndClose);
-        discardButton.onClick.AddListener(() => TempEmpty()); //change
+        discardButton.onClick.AddListener(DiscardChanges);
         gameplayButton.onClick.AddListener(() => SettingsTab(gameplayTab));
         displayButton.onClick.AddListener(() => SettingsTab(displayTab));
         audioButton.onClick.AddListener(() => SettingsTab(audioTab));
         saveFileButton.onClick.AddListener(() => SettingsTab(saveFileTab));
-        DELETESAVEFILE.onClick.AddListener(() => TempEmpty()); //change
+        DELETESAVEFILE.onClick.AddListener(DeleteSaveFile);
 
         //dropdown listeners
         fullscreenDropdown.onValueChanged.AddListener(delegate
         {
             pendingFullscreen = fullscreenDropdown.value;
+            SwitchFullscreen(pendingFullscreen);
         });
         resolutionDropdown.onValueChanged.AddListener(delegate
         {
             pendingResolution = resolutionDropdown.value;
+            SwitchResolution(pendingResolution);
         });
 
         settingsPanel.SetActive(false);
     }
-
-    private void TempEmpty() { }
 
     // slider 
     void SetupSlider(Slider slider, float min, float max)
@@ -143,19 +159,27 @@ public class SettingsMenu : MonoBehaviour
     {
         pendingScroll = GameSettings.ScrollSpeed;
         pendingOffset = GameSettings.AudioOffset;
+        pendingQuality = GameSettings.Quality;
+        pendingFullscreen = GameSettings.DefaultFullscreen;
+        pendingResolution = GameSettings.Resolution;
+        pendingMasterVol = GameSettings.MasterVolume;
         pendingMusicVol = GameSettings.MusicVolume;
         pendingSfxVol = GameSettings.SfxVolume;
+        pendingAmbienceVol = GameSettings.AmbienceVolume;
+        pendingMusicVol = GameSettings.MusicVolume;
+        pendingSfxVol = GameSettings.SfxVolume;
+
         for (int i = 0; i < pendingKeys.Length; i++)
             pendingKeys[i] = GameSettings.LaneKeys[i];
 
         listeningLane = -1;
 
         RefreshUI();
+        RefreshQuality(pendingQuality);
 
         foreach (GameObject obj in hideWhileOpen)
             if (obj != null) obj.SetActive(false);
         settingsPanel.SetActive(true);
-        SettingsTab(gameplayTab);
     }
 
     public void Close()
@@ -199,7 +223,7 @@ public class SettingsMenu : MonoBehaviour
             Close();
     }
 
-    void SettingsTab(GameObject tab)
+    public void SettingsTab(GameObject tab)
     {
         if (tab != null)
         {
@@ -211,17 +235,6 @@ public class SettingsMenu : MonoBehaviour
             tab.SetActive(true);
         }
     }
-/*
-    void GameplayTab() { if (gameplayTab != null) gameplayTab.SetActive(true); }
-    void DisplayTab() { if (gameplayTab != null) gameplayTab.SetActive(true); }
-    void AudioTab() { if (gameplayTab != null) gameplayTab.SetActive(true); }
-    void SaveFileTab() { if (gameplayTab != null) gameplayTab.SetActive(false); }
-
-    void TurnOffOtherSettingTabs()
-    {
-        if (gameplayTab != null) gameplayTab.SetActive(false);
-
-    } */
 
     // rebind 
     void StartRebind(int lane)
@@ -264,8 +277,13 @@ public class SettingsMenu : MonoBehaviour
     {
         GameSettings.ScrollSpeed = pendingScroll;
         GameSettings.AudioOffset = pendingOffset;
+        GameSettings.Quality = pendingQuality;
+        GameSettings.Fullscreen = pendingFullscreen;
+        GameSettings.Resolution = pendingResolution;
         GameSettings.MusicVolume = pendingMusicVol;
         GameSettings.SfxVolume = pendingSfxVol;
+        GameSettings.AmbienceVolume = pendingAmbienceVol;
+
         for (int i = 0; i < pendingKeys.Length; i++)
             GameSettings.LaneKeys[i] = pendingKeys[i];
 
@@ -273,14 +291,37 @@ public class SettingsMenu : MonoBehaviour
         Close();
     }
 
+    public void DiscardChanges()
+    {
+        pendingScroll = GameSettings.ScrollSpeed;
+        pendingOffset = GameSettings.AudioOffset;
+        pendingQuality = GameSettings.Quality;
+        pendingFullscreen = GameSettings.DefaultFullscreen;
+        pendingResolution = GameSettings.Resolution;
+        pendingMasterVol = GameSettings.MasterVolume;
+        pendingMusicVol = GameSettings.MusicVolume;
+        pendingSfxVol = GameSettings.SfxVolume;
+        pendingAmbienceVol = GameSettings.AmbienceVolume;
+        pendingMusicVol = GameSettings.MusicVolume;
+        pendingSfxVol = GameSettings.SfxVolume;
+
+        for (int i = 0; i < pendingKeys.Length; i++)
+            GameSettings.LaneKeys[i] = pendingKeys[i];
+
+        RefreshUI();
+    }
+
     // refreshing UI after changes
     void RefreshUI()
     {
         updatingUI = true;
-        if (scrollSlider != null) scrollSlider.value = pendingScroll * 2f; // times two due to drop height being a bit lower than average
-        if (offsetSlider != null) offsetSlider.value = pendingOffset;
-        if (musicVolumeSlider != null) musicVolumeSlider.value = Mathf.Round(pendingMusicVol * 100f);
-        if (sfxVolumeSlider != null) sfxVolumeSlider.value = Mathf.Round(pendingSfxVol * 100f);
+        scrollSlider.value = pendingScroll * 2f; // times two due to drop height being a bit lower than average
+        offsetSlider.value = pendingOffset;
+        qualitySlider.value = pendingQuality;
+        masterVolumeSlider.value = Mathf.Round(pendingMasterVol);
+        musicVolumeSlider.value = Mathf.Round(pendingMusicVol);
+        sfxVolumeSlider.value = Mathf.Round(pendingSfxVol);
+        ambienceVolumeSlider.value = Mathf.Round(pendingAmbienceVol);
         updatingUI = false;
 
         RefreshLabels();
@@ -289,10 +330,12 @@ public class SettingsMenu : MonoBehaviour
     // refreshing the value text
     void RefreshLabels()
     {
-        if (scrollValue != null) scrollValue.text = pendingScroll.ToString("0.0");
-        if (offsetValue != null) offsetValue.text = pendingOffset.ToString("+0;-0;0");
-        if (musicVolumeValue != null) musicVolumeValue.text = Mathf.RoundToInt(pendingMusicVol * 100f) + "%";
-        if (sfxVolumeValue != null) sfxVolumeValue.text = Mathf.RoundToInt(pendingSfxVol * 100f) + "%";
+        scrollValue.text = pendingScroll.ToString("0.0");
+        offsetValue.text = pendingOffset.ToString("+0;-0;0");
+        masterVolumeValue.text = Mathf.RoundToInt(pendingMasterVol) + "%";
+        musicVolumeValue.text = Mathf.RoundToInt(pendingMusicVol) + "%";
+        sfxVolumeValue.text = Mathf.RoundToInt(pendingSfxVol) + "%";
+        ambienceVolumeValue.text = Mathf.RoundToInt(pendingAmbienceVol) + "%";
 
         for (int i = 0; i < laneButtons.Length; i++)
         {
@@ -301,6 +344,61 @@ public class SettingsMenu : MonoBehaviour
             if (label == null) continue;
             label.text = i == listeningLane ? "?" : KeyName(pendingKeys[i]);
         }
+    }
+
+    void RefreshQuality(float val)
+    {
+        switch (qualitySlider.value)
+        {
+            case 0:
+                qualityValue.text = "Very Low";
+                break;
+            case 1:
+                qualityValue.text = "Low";
+                break;
+            case 2:
+                qualityValue.text = "Medium";
+                break;
+            case 3:
+                qualityValue.text = "High";
+                break;
+            case 4:
+                qualityValue.text = "Very High";
+                break;
+            case 5:
+                qualityValue.text = "Ultra";
+                break;
+        }
+        int quality = (int)val;
+        QualitySettings.SetQualityLevel(quality);
+        qualitySlider.value = pendingQuality;
+    }
+
+    void SwitchFullscreen(int val)
+    {
+        Debug.Log("Fullscreen switcher = ");
+        switch (val)
+        {
+            case 0:
+                Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
+                Debug.Log("Fullscreen");
+                break;
+            case 1:
+                Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+                Debug.Log("Borderless");
+                break;
+            case 2:
+                Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
+                Debug.Log("Windowed");
+                break;
+        }
+
+    }
+
+    void SwitchResolution(int val)
+    {
+        Resolution resolution = resolutions[val];
+        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreenMode);
     }
 
     // key names of keybind settings
@@ -315,10 +413,38 @@ public class SettingsMenu : MonoBehaviour
         return key.ToString().ToUpper();
     }
 
-    public void AudioLevel(AudioMixer mixer, float sliderVal)
+    public void AudioLevel(string channel, float sliderVal)
     {
         sliderVal = sliderVal / 100;
         sliderVal = (sliderVal == 0) ? 0.0001f : sliderVal;
-        mixer.SetFloat(mixer.ToString(), Mathf.Log10(sliderVal * 20));
+        mixer.SetFloat(channel, Mathf.Log10(sliderVal) * 20);
+    }
+
+    public void DeleteSaveFile()
+    {
+        string path = Application.persistentDataPath + "/Save/player.savefile";
+        {
+            string savefolder = Application.persistentDataPath + "/Save";
+            if (Directory.Exists(savefolder))
+            {
+                Debug.Log("Save folder found successfully");
+            }
+            else
+            {
+                Debug.Log("Save folder not found");
+                Debug.Log("creating folder...");
+                Directory.CreateDirectory(Application.persistentDataPath + "/Save");
+            }
+        }
+        if (File.Exists(path))
+        {
+            Debug.Log("Savefile exists, removing...");
+            File.Delete(path);
+            Debug.Log("Done");
+        }
+        else
+        {
+            Debug.Log("No savefile found");
+        }
     }
 }

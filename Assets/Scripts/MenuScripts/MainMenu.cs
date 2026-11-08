@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,8 @@ public class MainMenu : MonoBehaviour
 {
     public GameObject SettingsPanel;
     public bool continuePlay;
+    public GameObject player;
+    private SettingsMenu settingsMenu;
     private StatsManager statsManager;
 
     public Button storymodeButton;
@@ -38,7 +41,9 @@ public class MainMenu : MonoBehaviour
     {
         Debug.Log("MainMenu Init");
         if (SettingsPanel != null) SettingsPanel.SetActive(false);
-        statsManager = GetComponent<StatsManager>();
+        statsManager = player.GetComponent<StatsManager>();
+        settingsMenu = GetComponent<SettingsMenu>();
+        statsManager = player.GetComponent<StatsManager>();
     }
 
     private void Awake()
@@ -59,7 +64,7 @@ public class MainMenu : MonoBehaviour
         if (continuePlay)
         {
             continuePlay = false;
-            //statsManager.LoadPlayer();
+            statsManager.LoadPlayer();
             string sceneToLoad = statsManager.currentScene;
             Debug.Log(statsManager.currentScene);
             Debug.Log(sceneToLoad);
@@ -87,6 +92,8 @@ public class MainMenu : MonoBehaviour
     {
         Debug.Log("Settings Pressed");
         SettingsPanel.SetActive(true);
+        GameObject gameplayTab = settingsMenu.gameplayTab;
+        settingsMenu.SettingsTab(gameplayTab);
     }
 
     public void QuitGame()
