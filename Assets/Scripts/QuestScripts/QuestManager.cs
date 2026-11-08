@@ -37,6 +37,20 @@ public class QuestManager : MonoBehaviour
         QuestLogUI.Instance.RefreshQuestList();
     }
 
+    public void CompleteQuest(QuestSo questSo)
+    {
+        if (IsQuestCompleted(questSo))
+        {
+            questProgress.Remove(questSo);
+            QuestLogUI.Instance.RefreshQuestList();
+            Debug.Log("Quest Completed: " + questSo.questName);
+        }
+        else
+        {
+            Debug.LogWarning("Cannot complete quest: " + questSo.questName + ". Not all objectives are completed.");
+        }
+    }
+
 
     public void UpdateObjectiveProgress(QuestSo questSo, QuestObjective objective)
     {
@@ -88,5 +102,23 @@ public class QuestManager : MonoBehaviour
             }
         }
         return 0;
+    }
+
+    //error here
+    public bool IsQuestCompleted(QuestSo questSo)
+    {
+        if (!questProgress.ContainsKey(questSo))
+        {
+            return false;
+        }
+        var progressDictionary = questProgress[questSo];
+        foreach (var objective in questSo.objectives)
+        {
+            if (!progressDictionary.TryGetValue(objective, out int currentAmount) || currentAmount < objective.requiredAmount)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

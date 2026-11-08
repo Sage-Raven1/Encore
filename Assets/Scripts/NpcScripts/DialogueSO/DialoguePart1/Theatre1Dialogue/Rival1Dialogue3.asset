@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueLines:
   - speaker: {fileID: 11400000, guid: d3a5b56e5779d644cb7c43bc9dcfb6c5, type: 2}
-    text: Wow, you found my flower! Its for mom when I win.
-  requiredNpcs:
-  - {fileID: 11400000, guid: d3a5b56e5779d644cb7c43bc9dcfb6c5, type: 2}
-  requiredItems:
-  - {fileID: 11400000, guid: a91077c8027ec3743bd3598368bc7954, type: 2}
+    text: Take the pink flower, if you win give her the pink flowers.
+  offerQuestOnEnd: {fileID: 11400000, guid: 2c91669cbbc52164a9f8a760ae13b481, type: 2}
+  requiredNpcs: []
+  requiredItems: []
+  removeAfterPlay: 0
+  removeDialogueOnPlay:
+  - {fileID: 11400000, guid: bbdcd2641ed41a94d88c0e22044e8d2a, type: 2}

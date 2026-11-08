@@ -10,6 +10,12 @@ public class DialogueSoScript : ScriptableObject
     [Header("Quest offer optional")]
     public QuestSo offerQuestOnEnd;
 
+    [Header("Complete Quest requirements")]
+    public QuestSo requiredCompletedQuests;
+
+    [Header("Quest Turnin")]
+    public QuestSo turnInQuestOnEnd;
+
     [Header("Conditional Dialogue Requirements (Optional)")]
     public ActorSoScript[] requiredNpcs;
     public ItemSo[] requiredItems;
@@ -20,7 +26,7 @@ public class DialogueSoScript : ScriptableObject
 
     public bool IsConditionMet()
     {
-        if (requiredNpcs.Length > 0 || requiredItems.Length > 0)
+        if (requiredNpcs.Length > 0 || requiredItems.Length > 0 || requiredCompletedQuests != null)
         {
             foreach (var npc in requiredNpcs)
             {
@@ -36,6 +42,11 @@ public class DialogueSoScript : ScriptableObject
                 {
                     return false;
                 }
+            }
+
+            if (!QuestManager.Instance.IsQuestCompleted(requiredCompletedQuests))
+            {
+                return false;
             }
         }
         return true;

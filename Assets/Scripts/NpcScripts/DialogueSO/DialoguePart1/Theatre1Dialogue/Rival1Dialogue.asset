@@ -25,3 +25,8 @@ MonoBehaviour:
     text: Walk up to me on stage to start the fight.
   - speaker: {fileID: 11400000, guid: d3a5b56e5779d644cb7c43bc9dcfb6c5, type: 2}
     text: Good luck!
+  offerQuestOnEnd: {fileID: 0}
+  requiredNpcs: []
+  requiredItems: []
+  removeAfterPlay: 1
+  removeDialogueOnPlay: []

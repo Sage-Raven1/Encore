@@ -57,7 +57,11 @@ public class DialogueManager : MonoBehaviour
             {
                 Debug.Log("Quest Offered: " + _currentDialogue.offerQuestOnEnd.questName);
                 QuestManager.Instance.AcceptQuest(_currentDialogue.offerQuestOnEnd);//here is quest acceptance
-               
+            }
+            else if (_currentDialogue.turnInQuestOnEnd != null)
+            {
+                Debug.Log("Quest Turned In: " + _currentDialogue.turnInQuestOnEnd.questName);
+                QuestManager.Instance.CompleteQuest(_currentDialogue.turnInQuestOnEnd);//here is quest turn in
             }
             StatsManager.Instance.moveSpeed = _saveMoveSpeed;
             EndDialogue();
