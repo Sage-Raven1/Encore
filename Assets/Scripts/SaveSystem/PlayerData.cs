@@ -8,6 +8,7 @@ public class PlayerData
     public string scene;
     public int[] completion;
     public float score;
+    //public float[] position;
 
     //private PlayerController playerController;
 
@@ -20,6 +21,8 @@ public class PlayerData
         {
             completion[i] = player.completion[i];
         }
+
+        //position = player.position;
 
         score = 0; //replace with actual value once I know it
     }
